@@ -7,8 +7,10 @@
     "eslint": "eslint ./ --ext .js,.ts"
   },
   "husky": {
-    "pre-commit": "npm run eslint",
-    "pre-push": "npm run eslint"
+    "hooks": {
+      "pre-commit": "npm run eslint",
+      "pre-push": "npm run eslint"
+    }
   },
   "author": "",
   "license": "ISC",

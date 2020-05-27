@@ -15,9 +15,9 @@ function selectionSort(arr: number[]): number[] {
 }
 
 function findSmallest(arr: number[]): number {
-  var a = 1
+  const a = 1
   let smallest: number = arr[0]
-  let smallest_index: number = 0
+  let smallest_index = 0
   for (let i = 1; i < arr.length; i++) {
     if (arr[i] < smallest) {
       smallest = arr[i]

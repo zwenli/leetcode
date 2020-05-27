@@ -4,7 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint ./ --ext .ts"
+    "eslint": "eslint ./ --ext .js,.ts"
+  },
+  "husky": {
+    "pre-commit": "npm run eslint",
+    "pre-push": "npm run eslint"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +16,7 @@
     "@typescript-eslint/eslint-plugin": "^3.0.1",
     "@typescript-eslint/parser": "^3.0.1",
     "eslint": "^7.1.0",
+    "husky": "^4.2.5",
     "typescript": "^3.9.3"
   }
 }

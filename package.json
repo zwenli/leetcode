@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint ./ --ext .js,.ts"
+    "eslint": "eslint ./ --ext .ts"
   },
   "husky": {
     "hooks": {

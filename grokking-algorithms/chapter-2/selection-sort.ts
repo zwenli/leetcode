@@ -15,18 +15,19 @@ function selectionSort(arr: number[]): number[] {
 }
 
 function findSmallest(arr: number[]): number {
-  const a = 1
   let smallest: number = arr[0]
   let smallest_index = 0
   for (let i = 1; i < arr.length; i++) {
     if (arr[i] < smallest) {
       smallest = arr[i]
-      smallest_index = i
+      smallest_index = i;
     }
   }
-  return smallest_index
+  return smallest_index;
 }
 
-export default {
-  selectionSort
+// console.log(selectionSort([3,5,7,9,1,2]))
+
+export {
+  selectionSort,
 }

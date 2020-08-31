@@ -1,14 +1,24 @@
 module.exports = {
-  // parser: '@typescript-eslint/parser',
-  // plugins: ['@typescript-eslint'],
-  // rules: {
-  //   // 禁止使用 var
-  //   'no-var': "error",
-  //   // 优先使用 interface 而不是 type
-  //   '@typescript-eslint/consistent-type-definitions': [
-  //       "error",
-  //       "interface"
-  //   ]
-  // }
-  "extends": ["plugin:@typescript-eslint/recommended"]
-}
+  env: {
+    browser: true,
+    es6: true,
+    node: true,
+  },
+  extends: [
+    'airbnb-base',
+  ],
+  globals: {
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
+  },
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    ecmaVersion: 11,
+    sourceType: 'module',
+  },
+  plugins: [
+    '@typescript-eslint',
+  ],
+  rules: {
+  },
+};

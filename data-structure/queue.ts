@@ -2,21 +2,24 @@ class Queue {
   data: Array<number>
 
   constructor() {
-    this.data = []
+    this.data = [];
   }
+
   enQueue(value: number): boolean {
-    this.data.push(value)
-    return true
+    this.data.push(value);
+    return true;
   }
+
   deQueue(): boolean {
     if (this.isEmpty()) {
-      return false
+      return false;
     }
-    this.data.shift()
-    return true
+    this.data.shift();
+    return true;
   }
+
   isEmpty(): boolean {
-    return this.data.length === 0
+    return this.data.length === 0;
   }
 }
 
@@ -33,33 +36,42 @@ isFull(): 检查循环队列是否已满。
  */
 class CircularQueue {
   size: number
+
   data: Array<number>
+
   head: number
+
   tail: number
 
   constructor(k: number) {
-    this.size = k
-    this.data = new Array(k)
-    this.head = -1
-    this.tail = -1
+    this.size = k;
+    this.data = new Array(k);
+    this.head = -1;
+    this.tail = -1;
   }
-  enQueue(value: number): void {
-    console.log(value)
-  }
-  deQeueu(): void {
-    console.log('deQueue')
-  }
-  Front(): void {
-    console.log('Front')
-  }
-  Rear(): void {
-    console.log('Rear')
-  }
+
+  // enQueue(value: number): void {
+  //   console.log(value);
+  // }
+
+  // deQeueu(): void {
+  //   console.log('deQueue');
+  // }
+
+  // Front(): void {
+  //   console.log('Front');
+  // }
+
+  // Rear(): void {
+  //   console.log('Rear');
+  // }
+
   isEmpty(): boolean {
-    return this.head === -1
+    return this.head === -1;
   }
+
   isFull(): boolean {
-    return (this.tail + 1) % this.size === this.head
+    return (this.tail + 1) % this.size === this.head;
   }
 }
 
@@ -71,5 +83,5 @@ class CircularQueue {
 // const result_4 = queue.isEmpty() // true
 export default {
   Queue,
-  CircularQueue
-}
+  CircularQueue,
+};

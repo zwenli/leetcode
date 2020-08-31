@@ -20,5 +20,6 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'max-classes-per-file': ['error', 2],
   },
 };

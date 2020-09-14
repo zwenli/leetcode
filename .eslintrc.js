@@ -21,5 +21,6 @@ module.exports = {
   ],
   rules: {
     'max-classes-per-file': ['error', 2],
+    'no-continue': 0,
   },
 };

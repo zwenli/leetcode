@@ -9,6 +9,19 @@
  * @param {string} s
  * @return {boolean}
  */
+
+// function isPalindrome(str) {
+//   const { length } = str;
+//   let sgood = '';
+//   for (let i = 0; i < length; i += 1) {
+//     const char = str.charAt(i);
+//     if (/[a-zA-Z0-9]/.test(char)) {
+//       sgood += char.toLowerCase();
+//     }
+//   }
+//   return sgood === sgood.split('').reverse().join('');
+// }
+
 function isPalindrome(str) {
   // 双指针
   let sgood = '';

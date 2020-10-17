@@ -21,19 +21,29 @@ function hasCycle(head) {
   // Floyd 判圈算法（本质快慢指针）
   // slow每次移动一位，fast每次移动两位
   // 起始slow0，fast1，保证while可以正常循环
-  if (head == null || head.next == null) {
-    return false;
-  }
+  // if (head == null || head.next == null) {
+  //   return false;
+  // }
+  // let slow = head;
+  // let fast = head.next;
+  // while (slow !== fast) {
+  //   if (fast === null || fast.next === null) {
+  //     return false;
+  //   }
+  //   slow = slow.next;
+  //   fast = fast.next.next;
+  // }
+  // return true;
   let slow = head;
-  let fast = head.next;
-  while (slow !== fast) {
-    if (fast === null || fast.next === null) {
-      return false;
-    }
+  let fast = head;
+  while (slow !== null && fast !== null && fast.next !== null) {
     slow = slow.next;
     fast = fast.next.next;
+    if (fast === slow) {
+      return true;
+    }
   }
-  return true;
+  return false;
 }
 // @lc code=end
 

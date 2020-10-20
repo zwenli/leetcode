@@ -17,7 +17,9 @@
  * @return {ListNode}
  */
 function oddEvenList(head) {
-  if (!head || !head.next) return head;
+  // 时间复杂度O(n)：共n个节点，都遍历一次
+  // 空间复杂度O(n)：4个指针，常量级
+  if (!head) return head;
   // 奇数节点头
   const oddHead = head;
   // 偶数节点头
@@ -26,12 +28,14 @@ function oddEvenList(head) {
   let odd = head;
   // 偶数节点
   let even = evenHead;
-  while (odd.next !== null && even.next !== null) {
+  while (even !== null && even.next !== null) {
+    // 注意操作的顺序
     odd.next = even.next;
     odd = odd.next;
     even.next = odd.next;
     even = even.next;
   }
+  // 将odd的next指向偶数节点头
   odd.next = evenHead;
   return oddHead;
 }

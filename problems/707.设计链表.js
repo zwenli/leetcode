@@ -149,7 +149,7 @@ class MyLinkedList {
  */
 // @lc code=end
 
-// class MyListNode {
+// class SinglyListNode {
 //   // 单链表节点
 //   constructor(val) {
 //     this.next = null;
@@ -163,7 +163,7 @@ class MyLinkedList {
 //    * Initialize your data structure here.
 //    */
 //   constructor() {
-//     this.head = new MyListNode(null);
+//     this.head = new SinglyListNode(null);
 //   }
 
 //   /**
@@ -192,7 +192,7 @@ class MyLinkedList {
 //    * @return {void}
 //    */
 //   addAtHead(val) {
-//     const curNode = new MyListNode(val);
+//     const curNode = new SinglyListNode(val);
 //     const nextNode = this.head.next;
 //     this.head.next = curNode;
 //     curNode.next = nextNode;
@@ -204,7 +204,7 @@ class MyLinkedList {
 //    * @return {void}
 //    */
 //   addAtTail(val) {
-//     const curNode = new MyListNode(val);
+//     const curNode = new SinglyListNode(val);
 //     let preNode = this.head;
 //     while (preNode.next !== null) {
 //       preNode = preNode.next;
@@ -234,7 +234,7 @@ class MyLinkedList {
 //       j += 1;
 //     }
 //     if (j === index - 1) {
-//       const curNode = new MyListNode(val);
+//       const curNode = new SinglyListNode(val);
 //       const nextNode = preNode.next;
 //       preNode.next = curNode;
 //       curNode.next = nextNode;

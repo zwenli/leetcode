@@ -20,36 +20,69 @@
  * @return {ListNode}
  */
 function addTwoNumbers(l1, l2) {
-  // 迭代
-  const resHead = new ListNode(null);
-  let res = resHead;
-  let base = 0;
-  while (l1 !== null && l2 !== null) {
-    const curr = new ListNode((base + l1.val + l2.val) % 10);
-    res.next = curr;
-    base = Math.floor((base + l1.val + l2.val) / 10);
-    res = res.next;
-    l1 = l1.next;
-    l2 = l2.next;
+  // 优化
+  let head = null;
+  let tail = null;
+  let carry = 0;
+  while (l1 || l2) {
+    // 长度短的链表默认后面有若干个0
+    const n1 = l1 ? l1.val : 0;
+    const n2 = l2 ? l2.val : 0;
+    const sum = n1 + n2 + carry;
+    if (!head) {
+      // 第一个节点的处理
+      tail = new ListNode(sum % 10);
+      head = tail;
+    } else {
+      tail.next = new ListNode(sum % 10);
+      tail = tail.next;
+    }
+    carry = Math.floor(sum / 10);
+    if (l1) {
+      l1 = l1.next;
+    }
+    if (l2) {
+      l2 = l2.next;
+    }
   }
-  // l1,l2相加后，最后只有一个还有剩余
-  // 继续和base相加处理
-  let rest = l1 === null ? l2 : l1;
-  while (rest !== null) {
-    const curr = new ListNode((base + rest.val) % 10);
-    res.next = curr;
-    base = Math.floor((base + rest.val) / 10);
-    res = res.next;
-    rest = rest.next;
+  if (carry > 0) {
+    // 如果carry大于0，还得进一，加多一个节点
+    tail.next = new ListNode(carry);
   }
-  // 如果base大于0，还得进一
-  if (base > 0) {
-    res.next = new ListNode(base);
-    res = res.next;
-  }
-  return resHead.next;
+  return head;
 }
 // @lc code=end
+
+// function addTwoNumbers(l1, l2) {
+//   // 迭代
+//   const resHead = new ListNode(null);
+//   let res = resHead;
+//   let base = 0;
+//   while (l1 !== null && l2 !== null) {
+//     const curr = new ListNode((base + l1.val + l2.val) % 10);
+//     res.next = curr;
+//     base = Math.floor((base + l1.val + l2.val) / 10);
+//     res = res.next;
+//     l1 = l1.next;
+//     l2 = l2.next;
+//   }
+//   // l1,l2相加后，最后只有一个还有剩余
+//   // 继续和base相加处理
+//   let rest = l1 === null ? l2 : l1;
+//   while (rest !== null) {
+//     const curr = new ListNode((base + rest.val) % 10);
+//     res.next = curr;
+//     base = Math.floor((base + rest.val) / 10);
+//     res = res.next;
+//     rest = rest.next;
+//   }
+//   // 如果base大于0，还得进一
+//   if (base > 0) {
+//     res.next = new ListNode(base);
+//     res = res.next;
+//   }
+//   return resHead.next;
+// }
 
 function ListNode(val, next) {
   this.val = (val === undefined ? 0 : val);

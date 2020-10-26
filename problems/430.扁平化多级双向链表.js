@@ -23,38 +23,72 @@
  * @return {Node}
  */
 function flatten(head) {
-  // 递归
-  // 可以将链表当成二叉树，child为左节点，next为右节点
-  // 扁平化操作也就是对二叉树进行先序遍历（深度优先搜索DFS）
-
+  // 用迭代完成深度优先搜索
+  // 时间复杂度O(n)：每个节点遍历一次
+  // 空间复杂度O(n)：最多有n个节点存放在stack上，性能上比递归好
   if (!head) return head;
-  // 伪头节点，确保`p​​rev`指针永远不会为空
   const pseudoHead = new Node(0, null, head, null);
+  let curr = pseudoHead;
+  let prev = pseudoHead;
 
-  flattenDFS(pseudoHead, head);
-  // 将伪头节点与真实头节点分离
-  pseudoHead.next.prev = null;
-  return pseudoHead.next;
+  const stack = [head];
 
-  /**
-   * return the tail of the flatten list
-   * @param {*} prev 指针指向 curr 指向元素的前一个元素
-   * @param {*} curr 指针指向我们要扁平化的子列表
-   */
-  function flattenDFS(prev, curr) {
-    if (!curr) return prev;
+  while (stack.length) {
+    curr = stack.pop();
     curr.prev = prev;
     prev.next = curr;
 
-    // curr.next将在递归函数中得到调整
-    const tempNext = curr.next;
-    const tail = flattenDFS(curr, curr.child);
-    curr.child = null;
+    // 注意顺序，先右节点入栈，再左节点入栈
+    if (curr.next) {
+      stack.push(curr.next);
+    }
+    if (curr.child) {
+      stack.push(curr.child);
+      curr.child = null;
+    }
 
-    return flattenDFS(tail, tempNext);
+    prev = curr;
   }
+
+  pseudoHead.next.prev = null;
+  return pseudoHead.next;
 }
 // @lc code=end
+
+// function flatten(head) {
+//   // 递归
+//   // 可以将链表当成二叉树，child为左节点，next为右节点
+//   // 扁平化操作也就是对二叉树进行先序遍历（深度优先搜索DFS）
+//   // 时间复杂度O(n)：每个节点遍历一次
+//   // 空间复杂度O(n)：二叉树很可能不是个平衡的二叉树，若节点仅通过 child 指针相互链接，则在递归调用的过程中堆栈的深度会达到 n。
+
+//   if (!head) return head;
+//   // 伪头节点，确保`p​​rev`指针永远不会为空
+//   const pseudoHead = new Node(0, null, head, null);
+
+//   flattenDFS(pseudoHead, head);
+//   // 将伪头节点与真实头节点分离
+//   pseudoHead.next.prev = null;
+//   return pseudoHead.next;
+
+//   /**
+//    * return the tail of the flatten list
+//    * @param {*} prev 指针指向 curr 指向元素的前一个元素
+//    * @param {*} curr 指针指向我们要扁平化的子列表
+//    */
+//   function flattenDFS(prev, curr) {
+//     if (!curr) return prev;
+//     curr.prev = prev;
+//     prev.next = curr;
+
+//     // curr.next将在递归函数中得到调整
+//     const tempNext = curr.next;
+//     const tail = flattenDFS(curr, curr.child);
+//     curr.child = null;
+
+//     return flattenDFS(tail, tempNext);
+//   }
+// }
 
 // function flatten(head) {
 //   if (!head) return null;

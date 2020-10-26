@@ -1,3 +1,5 @@
+/* eslint-disable no-param-reassign */
+/* eslint-disable no-use-before-define */
 /* eslint-disable prefer-destructuring */
 /*
  * @lc app=leetcode.cn id=430 lang=javascript
@@ -21,29 +23,62 @@
  * @return {Node}
  */
 function flatten(head) {
-  if (!head) return null;
-  const stack = [];
-  let curr = head;
-  while (curr.next || curr.child || stack.length) {
-    if (curr.child) {
-      if (curr.next) {
-        stack.push(curr.next);
-      }
-      curr.next = curr.child;
-      curr.child.prev = curr;
-      curr.child = null;
-    } else if (!curr.next && stack.length) {
-      const next = stack.pop();
-      curr.next = next;
-      if (next) {
-        next.prev = curr;
-      }
-    }
-    curr = curr.next;
+  // 递归
+  // 可以将链表当成二叉树，child为左节点，next为右节点
+  // 扁平化操作也就是对二叉树进行先序遍历（深度优先搜索DFS）
+
+  if (!head) return head;
+  // 伪头节点，确保`p​​rev`指针永远不会为空
+  const pseudoHead = new Node(0, null, head, null);
+
+  flattenDFS(pseudoHead, head);
+  // 将伪头节点与真实头节点分离
+  pseudoHead.next.prev = null;
+  return pseudoHead.next;
+
+  /**
+   * return the tail of the flatten list
+   * @param {*} prev 指针指向 curr 指向元素的前一个元素
+   * @param {*} curr 指针指向我们要扁平化的子列表
+   */
+  function flattenDFS(prev, curr) {
+    if (!curr) return prev;
+    curr.prev = prev;
+    prev.next = curr;
+
+    // curr.next将在递归函数中得到调整
+    const tempNext = curr.next;
+    const tail = flattenDFS(curr, curr.child);
+    curr.child = null;
+
+    return flattenDFS(tail, tempNext);
   }
-  return head;
 }
 // @lc code=end
+
+// function flatten(head) {
+//   if (!head) return null;
+//   const stack = [];
+//   let curr = head;
+//   while (curr.next || curr.child || stack.length) {
+//     if (curr.child) {
+//       if (curr.next) {
+//         stack.push(curr.next);
+//       }
+//       curr.next = curr.child;
+//       curr.child.prev = curr;
+//       curr.child = null;
+//     } else if (!curr.next && stack.length) {
+//       const next = stack.pop();
+//       curr.next = next;
+//       if (next) {
+//         next.prev = curr;
+//       }
+//     }
+//     curr = curr.next;
+//   }
+//   return head;
+// }
 
 // Definition for a Node.
 function Node(val, prev, next, child) {
@@ -64,6 +99,7 @@ function makeParams1() {
   return one;
 }
 
+// [1,2,3,4,5,6,null,null,null,7,8,9,10,null,null,11,12]
 function makeParams2() {
   const list = [null];
   for (let i = 1; i <= 12; i += 1) {
@@ -102,8 +138,8 @@ function makeParams3() {
   ));
 }
 
-const res1 = flatten(makeParams1());
+const res1 = flatten(makeParams1()); // [1,3,2];
 
-const res2 = flatten(makeParams2());
+const res2 = flatten(makeParams2()); // [1,2,3,7,8,11,12,9,10,4,5,6]
 
-const res3 = flatten(makeParams3());
+const res3 = flatten(makeParams3()); // [1,2,3]

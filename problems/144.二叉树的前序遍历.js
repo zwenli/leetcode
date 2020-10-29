@@ -19,18 +19,42 @@
  * @return {number[]}
  */
 function preorderTraversal(root) {
+  // 迭代
   const res = [];
-  preorder(root, res);
+  const stack = [];
+  if (root) {
+    stack.push(root);
+  }
+  while (stack.length) {
+    const treeNode = stack.pop();
+    res.push(treeNode.val);
+    // 顺序上看起来和迭代的不一样，
+    // 其实stack为堆，先进先出，为了保证左节点先遍历，需要先把右节点压入栈再压左节点
+    if (treeNode.right) {
+      stack.push(treeNode.right);
+    }
+    if (treeNode.left) {
+      stack.push(treeNode.left);
+    }
+  }
   return res;
 }
 
-function preorder(node, res) {
-  if (!node) return;
-  res.push(node.val);
-  preorder(node.left, res);
-  preorder(node.right, res);
-}
 // @lc code=end
+
+// function preorderTraversal(root) {
+//   // 递归
+//   const res = [];
+//   preorder(root, res);
+//   return res;
+// }
+
+// function preorder(node, res) {
+//   if (!node) return;
+//   res.push(node.val);
+//   preorder(node.left, res);
+//   preorder(node.right, res);
+// }
 
 function TreeNode(val, left, right) {
   this.val = (val === undefined ? 0 : val);

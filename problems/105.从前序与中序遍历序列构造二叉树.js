@@ -1,8 +1,8 @@
 /* eslint-disable no-use-before-define */
 /*
- * @lc app=leetcode.cn id=106 lang=javascript
+ * @lc app=leetcode.cn id=105 lang=javascript
  *
- * [106] 从中序与后序遍历序列构造二叉树
+ * [105] 从前序与中序遍历序列构造二叉树
  */
 
 // @lc code=start
@@ -14,37 +14,32 @@
  * }
  */
 /**
+ * @param {number[]} preorder
  * @param {number[]} inorder
- * @param {number[]} postorder
  * @return {TreeNode}
  */
-function buildTree(inorder, postorder) {
+function buildTree(preorder, inorder) {
   // 递归
-  // 后序遍历，最后一个节点为根节点
+  // 前序遍历，第一节点为根节点
   // 中序遍历，根节点左边的为左子树，右边为右子树
   // 时间复杂度O(n): n为节点数量
   // 空间复杂度O(n): 需要O(n)的空间存储哈希表，h为树的高度，递归需要O(h)的栈空间，n>h，所以空间复杂度为O(n)
   const idxMap = new Map(); // 通过值定位中序遍历数组的下标
-  inorder.forEach((val, i) => idxMap.set(val, i));
-  let postId = postorder.length - 1; // 从后序遍历的最后一个元素开始
-
+  inorder.forEach((val, index) => idxMap.set(val, index));
+  let preId = 0; // 从前序遍历的第一个元素开始
   return helper(0, inorder.length - 1);
 
   function helper(left, right) {
-    // 二叉树不存在
     if (left > right) {
       return null;
     }
-
-    const rootVal = postorder[postId];
+    const rootVal = preorder[preId];
     const root = new TreeNode(rootVal);
-    const index = idxMap.get(rootVal);
-    postId -= 1;
-    // 注意顺序，是先构建右子树，再左子树
-    // 遍历右子树
-    root.right = helper(index + 1, right);
-    // 遍历左子树
+
+    const index = idxMap.get(root.val);
+    preId += 1;
     root.left = helper(left, index - 1);
+    root.right = helper(index + 1, right);
     return root;
   }
 }
@@ -56,4 +51,4 @@ function TreeNode(val) {
   this.right = null;
 }
 
-const res1 = buildTree([9, 3, 15, 20, 7], [9, 15, 7, 20, 3]);
+const res1 = buildTree([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]);

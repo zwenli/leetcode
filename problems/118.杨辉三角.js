@@ -1,8 +1,11 @@
+/* eslint-disable no-use-before-define */
 /*
  * @lc app=leetcode.cn id=118 lang=javascript
  *
  * [118] 杨辉三角
  */
+
+// TODO
 
 // @lc code=start
 /**
@@ -10,27 +13,52 @@
  * @return {number[][]}
  */
 function generate(numRows) {
+  // 递归 + 备忘录
+  // 递推关系 f(i,j) = f(i-1, j-1) + f(i - 1, j)
   const triangle = [];
-  // base case 0
-  if (numRows === 0) return triangle;
-  // base case 1
-  triangle.push([1]);
 
-  for (let rowNum = 1; rowNum < numRows; rowNum += 1) {
-    // base case j = 0
+  for (let i = 0; i < numRows; i += 1) {
     const row = [];
-    const prevRow = triangle[rowNum - 1];
-    row.push(1);
-    for (let j = 1; j < rowNum; j += 1) {
-      row.push(prevRow[j - 1] + prevRow[j]);
+    for (let j = 0; j <= i; j += 1) {
+      row.push(helper(i, j));
     }
-    // // base case j = rowNum
-    row.push(1);
     triangle.push(row);
   }
   return triangle;
+
+  function helper(i, j) {
+    // base case
+    if (j === 0 || j === i) {
+      return 1;
+    }
+    if (!triangle[i] || !triangle[i][j]) {
+      return helper(i - 1, j - 1) + helper(i - 1, j);
+    }
+    return triangle[i][j];
+  }
 }
 // @lc code=end
+// function generate(numRows) {
+//   const triangle = [];
+//   // base case 0
+//   if (numRows === 0) return triangle;
+//   // base case 1
+//   triangle.push([1]);
+
+//   for (let rowNum = 1; rowNum < numRows; rowNum += 1) {
+//     // base case j = 0
+//     const row = [];
+//     const prevRow = triangle[rowNum - 1];
+//     row.push(1);
+//     for (let j = 1; j < rowNum; j += 1) {
+//       row.push(prevRow[j - 1] + prevRow[j]);
+//     }
+//     // // base case j = rowNum
+//     row.push(1);
+//     triangle.push(row);
+//   }
+//   return triangle;
+// }
 
 // function generate(numRows) {
 //   // 算动态规划

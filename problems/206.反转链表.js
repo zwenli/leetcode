@@ -21,33 +21,52 @@
  * @param {ListNode} head
  * @return {ListNode}
  */
+
 function reverseList(head) {
   // 递归
   // f(x)
-  // if x = tail, return x;
-  // else do reverse, f(x.next) and f(x.next).next = x x.next=null returnn x
+  // if x = null || x.next = null, return x;
+  // else do reverse, f(x.next) and f(x.next).next = x x.next=null return head
   // 时间复杂度O(n): n为链表长度，每个节点遍历一次
   // 空间复杂度O(n): 递归产生栈，栈的深度等于链表长度
-  if (!head) return head;
-  let newHead = null;
-  reverseHelper(head);
-  return newHead;
-  function reverseHelper(head) {
-    if (!head.next) {
-      // 定位尾节点，并记录为新的头节点
-      // 返回尾节点
-      newHead = head;
-      return head;
-    }
-    // 递归先处理后面节点的反转
-    const reverse = reverseHelper(head.next);
-    // 将反转后的节点的next指向当前节点
-    reverse.next = head;
-    // 当前节点的指针置为null，返回自身
-    head.next = null;
+  if (!head || !head.next) {
     return head;
   }
+  // 假设链表的其余部分已被反转，然后在再处理当前节点的反转
+  const p = reverseList(head.next);
+  head.next.next = head;
+  head.next = null;
+  // 返回反转后的head
+  return p;
 }
+// function reverseList(head) {
+//   // 递归
+//   // 不是最优雅的，还要继续优化
+//   // f(x)
+//   // if x = tail, return x;
+//   // else do reverse, f(x.next) and f(x.next).next = x x.next=null returnn x
+//   // 时间复杂度O(n): n为链表长度，每个节点遍历一次
+//   // 空间复杂度O(n): 递归产生栈，栈的深度等于链表长度
+//   if (!head) return head;
+//   let newHead = null;
+//   reverseHelper(head);
+//   return newHead;
+//   function reverseHelper(head) {
+//     if (!head.next) {
+//       // 定位尾节点，并记录为新的头节点
+//       // 返回尾节点
+//       newHead = head;
+//       return head;
+//     }
+//     // 递归先处理后面节点的反转
+//     const reverse = reverseHelper(head.next);
+//     // 将反转后的节点的next指向当前节点
+//     reverse.next = head;
+//     // 当前节点的指针置为null，返回自身
+//     head.next = null;
+//     return head;
+//   }
+// }
 // @lc code=end
 
 // function reverseList(head) {

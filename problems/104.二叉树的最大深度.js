@@ -1,9 +1,12 @@
+/* eslint-disable no-shadow */
 /* eslint-disable no-use-before-define */
 /*
  * @lc app=leetcode.cn id=104 lang=javascript
  *
  * [104] 二叉树的最大深度
  */
+
+// TODO
 
 // @lc code=start
 /**
@@ -18,33 +21,57 @@
  * @return {number}
  */
 function maxDepth(root) {
-  // 广度优先搜索BFS
-  // 时间复杂度O(n)：n为二叉树的节点数量，每个节点遍历一次
-  // 空间复杂度O(n)：取决于队列中存储的元素数量，最坏情况下会达到O(n)
+  // 递归，DFS
+  // depth = max(l, r) + 1
+  // l,r 分别表示左子树、右子树的深度
+  // if (!root) return 0;
+  // const leftDepth = maxDepth(root.left);
+  // const rightDepth = maxDepth(root.right);
+  // return Math.max(leftDepth, rightDepth) + 1;
+  // 另一种递归，自顶向下的
   let ans = 0;
-  if (!root) return ans;
-  const queue = [root];
-
-  while (queue.length) {
-    // 当前层的节点数量
-    let size = queue.length;
-    while (size > 0) {
-      // 遍历当前层的节点
-      const node = queue.shift();
-      if (node.left) {
-        queue.push(node.left);
-      }
-      if (node.right) {
-        queue.push(node.right);
-      }
-      size -= 1;
-    }
-    // 每遍历完一层，深度加一
-    ans += 1;
-  }
+  calcDepth(root, 0); // 起始根节点，深度为0
   return ans;
+  function calcDepth(root, depth) {
+    if (!root) {
+      // 当前节点不存在，则比较现有深度
+      ans = Math.max(ans, depth);
+      return;
+    }
+    // 当前节点存在，继续遍历左节点，右节点，同时深度加1
+    calcDepth(root.left, depth + 1);
+    calcDepth(root.right, depth + 1);
+  }
 }
 // @lc code=end
+
+// function maxDepth(root) {
+//   // 广度优先搜索BFS
+//   // 时间复杂度O(n)：n为二叉树的节点数量，每个节点遍历一次
+//   // 空间复杂度O(n)：取决于队列中存储的元素数量，最坏情况下会达到O(n)
+//   let ans = 0;
+//   if (!root) return ans;
+//   const queue = [root];
+
+//   while (queue.length) {
+//     // 当前层的节点数量
+//     let size = queue.length;
+//     while (size > 0) {
+//       // 遍历当前层的节点
+//       const node = queue.shift();
+//       if (node.left) {
+//         queue.push(node.left);
+//       }
+//       if (node.right) {
+//         queue.push(node.right);
+//       }
+//       size -= 1;
+//     }
+//     // 每遍历完一层，深度加一
+//     ans += 1;
+//   }
+//   return ans;
+// }
 
 // function maxDepth(root) {
 //   // 自顶向下的遍历

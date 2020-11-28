@@ -1,9 +1,12 @@
+/* eslint-disable no-use-before-define */
 /* eslint-disable no-param-reassign */
 /*
  * @lc app=leetcode.cn id=21 lang=javascript
  *
  * [21] 合并两个有序链表
  */
+
+// TODO
 
 // @lc code=start
 /**
@@ -19,12 +22,30 @@
  * @return {ListNode}
  */
 function mergeTwoLists(l1, l2) {
+  // 递归
+  // 链表merge操作如下：
+  // l1[0] + merge(l1[1], l2[0]), l1[0] < l2[0]
+  // l2[0] + merge(l1[0], l2[1]), otherwise
+  // 时间复杂度O(m+n): m，n分别为两个链表的长度，
+  // 空间复杂度O(m+n): 栈空间的大小取决于链表的长度，结束函数递归调用时最多调用n+m
+  // if (!l1) {
+  //   return l2;
+  // }
+  // if (!l2) {
+  //   return l1;
+  // }
+  // if (l1.val < l2.val) {
+  //   l1.next = mergeTwoLists(l1.next, l2);
+  //   return l1;
+  // }
+  // l2.next = mergeTwoLists(l1, l2.next);
+  // return l2;
+
   // 迭代
-  // 时间复杂度O(m + n)
-  // 空间复杂度O(1)
-  const prevHead = { next: null };
+  // 需要记录个新的头节点
+  const prevHead = new ListNode(null);
   let prev = prevHead;
-  while (l1 !== null && l2 !== null) {
+  while (l1 && l2) {
     if (l1.val < l2.val) {
       prev.next = l1;
       l1 = l1.next;
@@ -34,12 +55,32 @@ function mergeTwoLists(l1, l2) {
     }
     prev = prev.next;
   }
-  // 合并后 l1 和 l2 最多只有一个还未被合并完，
-  // 我们直接将链表末尾指向未合并完的链表即可
-  prev.next = l1 === null ? l2 : l1;
+  prev.next = l1 || l2;
   return prevHead.next;
 }
 // @lc code=end
+
+// function mergeTwoLists(l1, l2) {
+//   // 迭代
+//   // 时间复杂度O(m + n)
+//   // 空间复杂度O(1)
+//   const prevHead = { next: null };
+//   let prev = prevHead;
+//   while (l1 !== null && l2 !== null) {
+//     if (l1.val < l2.val) {
+//       prev.next = l1;
+//       l1 = l1.next;
+//     } else {
+//       prev.next = l2;
+//       l2 = l2.next;
+//     }
+//     prev = prev.next;
+//   }
+//   // 合并后 l1 和 l2 最多只有一个还未被合并完，
+//   // 我们直接将链表末尾指向未合并完的链表即可
+//   prev.next = l1 === null ? l2 : l1;
+//   return prevHead.next;
+// }
 
 // function mergeTwoLists(l1, l2) {
 //   // 递归

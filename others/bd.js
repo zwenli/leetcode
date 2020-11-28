@@ -1,4 +1,5 @@
 /* eslint-disable no-use-before-define */
+// 算法：数组合并展开
 // [['a', 'b'], ['n', 'm'], ['0', '1']] => ["an0", "an1", "am0", "am1", "bn0", "bn1", "bm0", "bm1"]
 // 字节跳动笔试题
 

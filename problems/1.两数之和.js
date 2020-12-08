@@ -11,7 +11,7 @@
  * @return {number[]}
  */
 
-// TODO 1刷
+// TODO 2刷
 
 // 2. 哈希
 function twoSum(nums, target) {

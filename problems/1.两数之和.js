@@ -16,17 +16,26 @@
 // 2. 哈希
 function twoSum(nums, target) {
   if (!nums) return [];
-  const mapTable = new Map(); // num -> index
+  const map = new Map(); // num -> index
   const { length } = nums;
+  // 根本不用循环两次，一次就够了
+  // 没找到将当前存进hash表中，继续下一个，只要has(target-nums[i])存在就是我们要的结果了。
+  // 在此题中不怕有hash碰撞的情况，判断的不是当前的key本身存不存在，而是key和tag之间差值的存不存在
+  // for (let i = 0; i < length; i += 1) {
+  //   map.set(nums[i], i);
+  // }
+  // for (let i = 0; i < length; i += 1) {
+  //   const ret = target - nums[i];
+  //   if (map.has(ret)) {
+  //     const j = map.get(ret);
+  //     if (i !== j) return [i, j];
+  //   }
+  // }
   for (let i = 0; i < length; i += 1) {
-    mapTable.set(nums[i], i);
-  }
-  for (let i = 0; i < length; i += 1) {
-    const ret = target - nums[i];
-    if (mapTable.has(ret)) {
-      const j = mapTable.get(ret);
-      if (i !== j) return [i, j];
+    if (map.has(target - nums[i])) {
+      return [map.get(target - nums[i]), i];
     }
+    map.set(nums[i], i);
   }
   return [];
 }

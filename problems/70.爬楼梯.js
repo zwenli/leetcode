@@ -6,7 +6,7 @@
  * [70] 爬楼梯
  */
 
-// TODO：Binets 方法
+// TODO：1刷， Binets 方法
 
 // @lc code=start
 /**
@@ -14,21 +14,49 @@
  * @return {number}
  */
 function climbStairs(n) {
-  // 斐波那契解法
-  // 在动态规划解法中，dp[i] = dp[i-1] + dp[i-2]，其实dp[i]就是第i个斐波那契数。
-  // F(n) = F(n-1) + F(n-2)
-  // 时间复杂度O(n): 循环到n
-  // 空间复杂度O(1): 使用常量级的空间
-  if (n === 1) return 1;
+  // 动态规划 dpi = dpi-1 + dpi-2
+  // 时间复杂度O(n)
+  // 空间复杂度O(1)
+  if (n <= 2) return n;
   let first = 1;
   let second = 2;
   for (let i = 3; i <= n; i += 1) {
-    [first, second] = [second, first + second];
+    [second, first] = [first + second, second];
   }
   return second;
 }
 
 // @lc code=end
+
+/**
+ * 重新刷题
+ *
+ * base case 1阶台阶 为1，二阶台阶为2
+ * 第n阶，可以理解为，有两种情况在n-1阶走一阶，在n-2走两阶，也就是F(n)=F(n-1)+ F(n-2) ,满足斐波拉基
+ *
+ * 1. 递归，确定好base case
+ * 2. 递归加备忘录，对方法一的优化
+ * 3. 动态规划，dp[i] = dp[i - 1] + dp[i - 2], dp[1] = 1, dp[2] = 2
+ * 4. 迭代，(动态规划优化), 只需用p,q,r保存就好了
+ * 5. 数学公式，推倒公式看官网吧，我也不懂。。。
+ * 6. 也是数学公式，矩阵的
+ * https://leetcode-cn.com/problems/climbing-stairs/solution/pa-lou-ti-by-leetcode-solution/
+ */
+
+// function climbStairs(n) {
+//   // 斐波那契解法
+//   // 在动态规划解法中，dp[i] = dp[i-1] + dp[i-2]，其实dp[i]就是第i个斐波那契数。
+//   // F(n) = F(n-1) + F(n-2)
+//   // 时间复杂度O(n): 循环到n
+//   // 空间复杂度O(1): 使用常量级的空间
+//   if (n === 1) return 1;
+//   let first = 1;
+//   let second = 2;
+//   for (let i = 3; i <= n; i += 1) {
+//     [first, second] = [second, first + second];
+//   }
+//   return second;
+// }
 
 // function climbStairs(n) {
 //   // 动态规划

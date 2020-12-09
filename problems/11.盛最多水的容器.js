@@ -5,7 +5,7 @@
  * [11] 盛最多水的容器
  */
 
-// TODO 1刷
+// TODO 2刷
 
 // @lc code=start
 /**
@@ -56,4 +56,7 @@ const res1 = maxArea([1, 8, 6, 2, 5, 4, 8, 3, 7]); // 49
  *
  * 1. 枚举i、j，分别计算出来取最大，时间复杂度O(n)，（暴力法）
  * 2. 左右边界i、j，向中间收敛，i、j对比，小的继续进/减1，时间复杂度O(n)，左右夹逼，（双指针）
+ * 可以证明双指针收敛法是正确的
+ * https://leetcode-cn.com/problems/container-with-most-water/solution/sheng-zui-duo-shui-de-rong-qi-by-leetcode-solution/
+ * 其本质就是在判断移动的过程中就消去了一些不可能为最大值的情况。
  */

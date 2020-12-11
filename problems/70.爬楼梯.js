@@ -6,7 +6,7 @@
  * [70] 爬楼梯
  */
 
-// TODO：1刷， Binets 方法
+// TODO：2刷， Binets 方法
 
 // @lc code=start
 /**
@@ -18,12 +18,21 @@ function climbStairs(n) {
   // 时间复杂度O(n)
   // 空间复杂度O(1)
   if (n <= 2) return n;
+  // let first = 1;
+  // let second = 2;
+  // for (let i = 3; i <= n; i += 1) {
+  //   [second, first] = [first + second, second];
+  // }
+  // return second;
   let first = 1;
   let second = 2;
+  let third = 0;
   for (let i = 3; i <= n; i += 1) {
-    [second, first] = [first + second, second];
+    third = first + second;
+    first = second;
+    second = third;
   }
-  return second;
+  return third;
 }
 
 // @lc code=end
@@ -42,6 +51,39 @@ function climbStairs(n) {
  * 6. 也是数学公式，矩阵的
  * https://leetcode-cn.com/problems/climbing-stairs/solution/pa-lou-ti-by-leetcode-solution/
  */
+
+// function climbStairs(n) {
+//   // 动态规划
+//   // dp[i] = dp[i-1] + dp[i-2]
+//   if (n <= 2) return n;
+//   const dp = new Array(n + 1);
+//   dp[1] = 1;
+//   dp[2] = 2;
+//   for (let i = 3; i <= n; i += 1) {
+//     dp[i] = dp[i-1] + dp[i-2];
+//   }
+//   return dp[n];
+// }
+
+// function climbStairs(n) {
+//   // 递归
+//   if (n <= 2) return n;
+//   return climbStairs(n-1) + climbStairs(n-2);
+// }
+
+// function climbStairs(n) {
+//   // 递归 + 备忘录
+//   const cache = new Map();
+//   return helper(n);
+
+//   function helper(n) {
+//     if (n <= 2) return n;
+//     if (cache.has(n)) return cache.get(n);
+//     const res = helper(n-1) + helper(n-2);
+//     cache.set(n, res);
+//     return res;
+//   }
+// }
 
 // function climbStairs(n) {
 //   // 斐波那契解法

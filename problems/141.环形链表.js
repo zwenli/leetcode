@@ -4,6 +4,8 @@
  * [141] 环形链表
  */
 
+// TODO 1刷
+
 // @lc code=start
 /**
  * Definition for singly-linked list.
@@ -34,9 +36,10 @@ function hasCycle(head) {
   //   fast = fast.next.next;
   // }
   // return true;
+  // 这种相比上面是先走再对比，要保证首次对比时，两者不是再同一起点上，while循环才正常
   let slow = head;
   let fast = head;
-  while (slow !== null && fast !== null && fast.next !== null) {
+  while (fast !== null && fast.next !== null) {
     slow = slow.next;
     fast = fast.next.next;
     if (fast === slow) {
@@ -47,6 +50,34 @@ function hasCycle(head) {
 }
 // @lc code=end
 
+// 2. 快慢指针
+// 时间复杂度O(n): 每个节点遍历一次
+// 空间复杂度O(1): 两个指针
+// function hasCycle(head) {
+//   if (!head || !head.next) return false;
+//   let slow = head;
+//   let fast = head.next;
+//   // 快指针或快指针的下个节点为空，说明链表没有环
+//   while (fast && fast.next) {
+//     if (fast === slow) return true;
+//     slow = slow.next;
+//     fast = fast.next.next;
+//   }
+//   return false
+// }
+// 1. hash
+// 时间复杂度O(n): 每个节点遍历一次
+// 空间复杂度O(n): 极端情况下为没有环，即需要存n个节点
+// function hasCycle(head) {
+//   const cache = new Set();
+//   while (head) {
+//     if (cache.has(head)) return true;
+//     cache.add(head);
+//     head = head.next;
+//   }
+//   return false
+// }
+// -------
 // function hasCycle(head) {
 //   // 哈希表
 //   // 时间复杂度O(n)

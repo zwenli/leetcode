@@ -86,5 +86,20 @@ function rotate(nums, k) {
 //   return nums;
 // }
 
+// function rotate (nums, k) {
+//   // 暴力
+//   if (!nums || !nums.length) return nums
+//   const length = nums.length;
+//   for (let i = 0; i < k; i += 1) {
+//     let prev = nums[length - 1];
+//     for (let j = 0; j < length; j += 1) {
+//       let temp = nums[j];
+//       nums[j] = prev;
+//       prev = temp;
+//     }
+//   }
+//   return nums;
+// }
+
 const res2 = rotate([1, 2, 3, 4, 5, 6], 2); // 5,6,1,2,3,4
 const res1 = rotate([1, 2, 3, 4, 5, 6, 7], 3); // 5,6,7,1,2,3,4

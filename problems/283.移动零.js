@@ -14,29 +14,34 @@
  * @return {void} Do not return anything, modify nums in-place instead.
  */
 
-function moveZeroes(nums) {
-  // 双指针
-  if (!nums) return nums;
-  let j = 0;
-  for (let i = 0; i < nums.length; i += 1) {
-    if (nums[i] !== 0) {
-      [nums[j], nums[i]] = [nums[i], nums[j]];
-      j += 1;
-    }
-  }
-}
+// function moveZeroes(nums) {
+//   // 双指针
+//   if (!nums) return nums;
+//   let j = 0;
+//   for (let i = 0; i < nums.length; i += 1) {
+//     if (nums[i] !== 0) {
+//       [nums[j], nums[i]] = [nums[i], nums[j]];
+//       j += 1;
+//     }
+//   }
+// }
 
 // @lc code=end
 
 // 2. count zeros
-// var moveZeroes = function(nums) {
-//   let zeroCounts = 0;
-//   for (let i = 0; i < nums.length; i += 1) {
-//     if (nums[i] !== 0) {
-//       nums[zeroCounts] = nums[i];
-//       zeroCounts += 1;
-//     }
-//   }
+function moveZeroes(nums) {
+  let zeroCounts = 0;
+  for (let i = 0; i < nums.length; i += 1) {
+    if (nums[i] !== 0) {
+      nums[zeroCounts] = nums[i];
+      zeroCounts += 1;
+    }
+  }
+  while (zeroCounts < nums.length) {
+    nums[zeroCounts] = 0;
+    zeroCounts += 1;
+  }
+}
 
 // 1. new array
 // var moveZeroes = function(nums) {

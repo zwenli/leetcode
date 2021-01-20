@@ -6,21 +6,28 @@
 
 // @lc code=start
 
-// TODO
-// 2.链表实现；
+// TODO: 1刷
+
+class ListNode {
+  constructor(val, next, prev) {
+    this.val = val;
+    this.next = next;
+    this.prev = prev;
+  }
+}
 class MyCircularDeque {
-  // 1. 数组实现，两个指针
+  // 1. 链表实现
   /**
    * Initialize your data structure here. Set the size of the deque to be k.
    * @param {number} k
    */
   constructor(k) {
-    // front 指向队列头部第 1 个有效数据的位置
-    // rear 指向队列尾部（即最后 1 个有效数据）的 下一个位置，即下一个从队尾入队元素的位置。
-    this.capacity = k + 1; // 预留一个空白位置，解决队列满和队列空判断条件冲突的问题
-    this.data = new Array(this.capacity);
-    this.front = 0; // insert 先-1再赋值，front指向的就是当前front
-    this.rear = 0; // insert 先赋值，再+1，rear-1才是指向rear
+    this.size = k;
+    this.length = 0;
+    this.front = new ListNode('front');
+    this.rear = new ListNode('rear');
+    this.front.next = this.rear;
+    this.rear.prev = this.front;
   }
 
   /**
@@ -30,9 +37,13 @@ class MyCircularDeque {
    */
   insertFront(value) {
     if (this.isFull()) return false;
-    // 往前移一位，注意越界问题
-    this.front = (this.front - 1 + this.capacity) % this.capacity;
-    this.data[this.front] = value;
+    const now = new ListNode(value);
+    const { next } = this.front;
+    now.next = next;
+    now.prev = this.front;
+    next.prev = now;
+    this.front.next = now;
+    this.length += 1;
     return true;
   }
 
@@ -43,8 +54,13 @@ class MyCircularDeque {
    */
   insertLast(value) {
     if (this.isFull()) return false;
-    this.data[this.rear] = value;
-    this.rear = (this.rear + 1) % this.capacity;
+    const now = new ListNode(value);
+    const { prev } = this.rear;
+    now.prev = prev;
+    now.next = this.rear;
+    prev.next = now;
+    this.rear.prev = now;
+    this.length += 1;
     return true;
   }
 
@@ -54,7 +70,11 @@ class MyCircularDeque {
    */
   deleteFront() {
     if (this.isEmpty()) return false;
-    this.front = (this.front + 1) % this.capacity;
+    const now = this.front.next;
+    const { next } = now;
+    this.front.next = next;
+    next.prev = this.front;
+    this.length -= 1;
     return true;
   }
 
@@ -64,7 +84,11 @@ class MyCircularDeque {
    */
   deleteLast() {
     if (this.isEmpty()) return false;
-    this.rear = (this.rear - 1 + this.capacity) % this.capacity;
+    const now = this.rear.prev;
+    const { prev } = now;
+    this.rear.prev = prev;
+    prev.next = this.rear;
+    this.length -= 1;
     return true;
   }
 
@@ -74,7 +98,7 @@ class MyCircularDeque {
    */
   getFront() {
     if (this.isEmpty()) return -1;
-    return this.data[this.front];
+    return this.front.next.val;
   }
 
   /**
@@ -83,7 +107,7 @@ class MyCircularDeque {
    */
   getRear() {
     if (this.isEmpty()) return -1;
-    return this.data[(this.rear - 1 + this.capacity) % this.capacity];
+    return this.rear.prev.val;
   }
 
   /**
@@ -91,7 +115,7 @@ class MyCircularDeque {
    * @return {boolean}
    */
   isEmpty() {
-    return this.front === this.rear;
+    return this.length === 0;
   }
 
   /**
@@ -99,9 +123,104 @@ class MyCircularDeque {
    * @return {boolean}
    */
   isFull() {
-    return (this.rear + 1) % this.capacity === this.front;
+    return this.length >= this.size;
   }
 }
+
+// class MyCircularDeque {
+//   // 1. 数组实现，两个指针
+//   /**
+//    * Initialize your data structure here. Set the size of the deque to be k.
+//    * @param {number} k
+//    */
+//   constructor(k) {
+//     // front 指向队列头部第 1 个有效数据的位置
+//     // rear 指向队列尾部（即最后 1 个有效数据）的 下一个位置，即下一个从队尾入队元素的位置。
+//     this.capacity = k + 1; // 预留一个空白位置，解决队列满和队列空判断条件冲突的问题
+//     this.data = new Array(this.capacity);
+//     this.front = 0; // insert 先-1再赋值，front指向的就是当前front
+//     this.rear = 0; // insert 先赋值，再+1，rear-1才是指向rear
+//   }
+
+//   /**
+//    * Adds an item at the front of Deque. Return true if the operation is successful.
+//    * @param {number} value
+//    * @return {boolean}
+//    */
+//   insertFront(value) {
+//     if (this.isFull()) return false;
+//     // 往前移一位，注意越界问题
+//     this.front = (this.front - 1 + this.capacity) % this.capacity;
+//     this.data[this.front] = value;
+//     return true;
+//   }
+
+//   /**
+//    * Adds an item at the rear of Deque. Return true if the operation is successful.
+//    * @param {number} value
+//    * @return {boolean}
+//    */
+//   insertLast(value) {
+//     if (this.isFull()) return false;
+//     this.data[this.rear] = value;
+//     this.rear = (this.rear + 1) % this.capacity;
+//     return true;
+//   }
+
+//   /**
+//    * Deletes an item from the front of Deque. Return true if the operation is successful.
+//    * @return {boolean}
+//    */
+//   deleteFront() {
+//     if (this.isEmpty()) return false;
+//     this.front = (this.front + 1) % this.capacity;
+//     return true;
+//   }
+
+//   /**
+//    * Deletes an item from the rear of Deque. Return true if the operation is successful.
+//    * @return {boolean}
+//    */
+//   deleteLast() {
+//     if (this.isEmpty()) return false;
+//     this.rear = (this.rear - 1 + this.capacity) % this.capacity;
+//     return true;
+//   }
+
+//   /**
+//    * Get the front item from the deque.
+//    * @return {number}
+//    */
+//   getFront() {
+//     if (this.isEmpty()) return -1;
+//     return this.data[this.front];
+//   }
+
+//   /**
+//    * Get the last item from the deque.
+//    * @return {number}
+//    */
+//   getRear() {
+//     if (this.isEmpty()) return -1;
+//     return this.data[(this.rear - 1 + this.capacity) % this.capacity];
+//   }
+
+//   /**
+//    * Checks whether the circular deque is empty or not.
+//    * @return {boolean}
+//    */
+//   isEmpty() {
+//     return this.front === this.rear;
+//   }
+
+//   /**
+//    * Checks whether the circular deque is full or not.
+//    * @return {boolean}
+//    */
+//   isFull() {
+//     return (this.rear + 1) % this.capacity === this.front;
+//   }
+// }
 
 /**
  * Your MyCircularDeque object will be instantiated and called as such:
@@ -126,4 +245,4 @@ const param_5 = obj.getRear(); // 2
 const param_6 = obj.isFull(); // true
 const param_7 = obj.deleteLast(); // true
 const param_8 = obj.insertFront(4); // true
-const param_9 = obj.getFront(4); // true
+const param_9 = obj.getFront(); // 4

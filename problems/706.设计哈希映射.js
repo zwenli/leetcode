@@ -19,6 +19,8 @@ class ListNode {
 // 时间复杂度为O(1), 空间复杂度为O(N)
 // 极端情况下，所有key的哈希值下标都相同，
 // 时间复杂度为O(N), 空间复杂度为O(N)
+
+// TODO: 优化，抽出find，hashkey的函数
 class MyHashMap {
   /**
    * Initialize your data structure here.

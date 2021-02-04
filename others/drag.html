@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .resize {
+      height: 300px;
+      background-color: antiquewhite;
+      position: relative;
+    }
+    .drag-handler {
+      width: 8px;
+      height: 100%;
+      position: absolute;
+      right: 0;
+      cursor: e-resize;
+    }
+  </style>
+</head>
+
+<body>
+  <div style="width: 200px;" class="resize">
+    <div class="drag-handler"></div>
+  </div>
+</body>
+<script>
+  const drag = document.querySelector('.drag-handler');
+  const container = document.querySelector('.resize');
+  let keypress = false;
+  let pressY = null;
+  let width = null
+  function handleDowm(e) {
+    console.log('mousedown', e);
+    keypress = true;
+    pressX = e.clientX;
+    width = container.getBoundingClientRect().width;
+    document.addEventListener('mousemove', handleMove)
+    document.addEventListener('mouseup', handleUp)
+  }
+  const handleMove = (e) => {
+    console.log('mousemove', e);
+    container.style.width = `${width + (e.clientX - pressX)}px`;
+  };
+  
+  function handleUp(e) {
+    console.log('mouseup', e);
+    keypress = false;
+    pressY = null;
+    width = null;
+    document.removeEventListener('mousemove', handleMove);
+    document.removeEventListener('mouseup', handleUp);
+  }
+  // function debounce(fn, delay = 250) {
+  //   let timer = null;
+  //   return () => {
+  //     let context = this;
+  //     let args = arguments;
+  //     clearTimeout(timer);
+  //     timer = setTimeout(() => {
+  //       fn.apply(context, args);
+  //     }, delay);
+  //   }
+  // }
+  
+  // function throttle(fn, delay = 250) {
+  //   let timer = null;
+  //   return function() {
+  //     let context = this;
+  //     let args = arguments;
+  //     if (timer) return;
+  //     timer = setTimeout(() => {
+  //       fn.apply(context, args);
+  //       clearTimeout(timer);
+  //     }, delay);
+  //   }
+  // }
+  drag.addEventListener('mousedown', handleDowm);
+</script>
+</html>

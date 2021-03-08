@@ -58,7 +58,7 @@ function lowestCommonAncestor(root, p, q) {
     q = parent.get(q.val);
   }
   return null;
-
+  // 这里可以改为迭代
   function dfs(root) {
     if (!root) return;
     if (root.left) {
@@ -70,6 +70,20 @@ function lowestCommonAncestor(root, p, q) {
       dfs(root.right);
     }
   }
+  // function bfs(root, p, q) {
+  //   const stack = [root];
+  //   while (!parent.has(p.val) || !parent.has(q.val)) {
+  //     const node = stack.shift();
+  //     if (node.left) {
+  //       parent.set(node.left.val, root);
+  //       stack.push(node.left);
+  //     }
+  //     if (node.right) {
+  //       parent.set(node.right.val, root);
+  //       stack.push(node.right);
+  //     }
+  //   }
+  // }
 }
 
 // function lowestCommonAncestor(root, p, q) {

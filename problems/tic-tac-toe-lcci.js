@@ -39,69 +39,69 @@ https://leetcode-cn.com/problems/tic-tac-toe-lcci/
  * O -> 1, ' ' -> 0, X -> -1，通过
  */
 function tictactoe(board) {
-  const pattern = board.join('').split('')
-  const lens = pattern.length
+  const pattern = board.join('').split('');
+  const lens = pattern.length;
   if (pattern[0] === ' ' && lens === 1) {
-    return 'Draw'
+    return 'Draw';
   }
-  const N = Math.sqrt(lens)
-  let absSum = 0
+  const N = Math.sqrt(lens);
+  let absSum = 0;
   for (let i = 0; i < lens; i++) {
     if (pattern[i] === 'O') {
-      pattern[i] = 1
-    } else if (pattern[i] === 'X'){
-      pattern[i] = -1
+      pattern[i] = 1;
+    } else if (pattern[i] === 'X') {
+      pattern[i] = -1;
     } else {
-      pattern[i] = 0
+      pattern[i] = 0;
     }
-    absSum += Math.abs(pattern[i])
+    absSum += Math.abs(pattern[i]);
   }
   // 横
   for (let i = 0; i < N; i++) {
-    let sum = 0
+    let sum = 0;
     for (let j = 0; j < N; j++) {
-      sum += pattern[i * N + j]
+      sum += pattern[i * N + j];
     }
-    if (sum === N) return 'O'
-    if (sum === -N) return 'X'
+    if (sum === N) return 'O';
+    if (sum === -N) return 'X';
   }
   // 竖
   for (let i = 0; i < N; i++) {
-    let sum = 0
+    let sum = 0;
     for (let j = 0; j < N; j++) {
-      sum += pattern[j * N + i]
+      sum += pattern[j * N + i];
     }
-    if (sum === N) return 'O'
-    if (sum === -N) return 'X'
+    if (sum === N) return 'O';
+    if (sum === -N) return 'X';
   }
   // 斜
   {
-    let sum = 0
+    let sum = 0;
     for (let i = 0; i < N; i++) {
-      sum += pattern[i * N + i]
+      sum += pattern[i * N + i];
     }
-    if (sum === N) return 'O'
-    if (sum === -N) return 'X'
+    if (sum === N) return 'O';
+    if (sum === -N) return 'X';
   }
   {
-    let sum = 0
+    let sum = 0;
     // 以y轴为参数，
     for (let i = 1; i < N + 1; i++) {
-      sum += pattern[i * N - i]
+      sum += pattern[i * N - i];
     }
-    if (sum === N) return 'O'
-    if (sum === -N) return 'X'
+    if (sum === N) return 'O';
+    if (sum === -N) return 'X';
   }
-  if (absSum === lens) return 'Draw'
-  return 'Pending'
+  if (absSum === lens) return 'Draw';
+  return 'Pending';
 }
 
 // const res = tictactoe(["O"])
-const res1 = tictactoe(["XOX","OOX","OXO"]) // draw
-const res2 = tictactoe(["XOX","   ","OXO"]) // pending
-const res3 = tictactoe(["XOO","X  ","XO "]) // X
-const res4 = tictactoe(["X O"," OX","OX "]) // O
-console.log(res1)
-console.log(res2)
-console.log(res3)
-console.log(res4)
+const res1 = tictactoe(['XOX', 'OOX', 'OXO']); // draw
+const res2 = tictactoe(['XOX', '   ', 'OXO']); // pending
+const res3 = tictactoe(['XOO', 'X  ', 'XO ']); // X
+const res4 = tictactoe(['X O', ' OX', 'OX ']); // O
+console.log(res1);
+console.log(res2);
+console.log(res3);
+console.log(res4);

@@ -24,24 +24,24 @@ function maxDepth(root) {
   // 递归，DFS
   // depth = max(l, r) + 1
   // l,r 分别表示左子树、右子树的深度
-  // if (!root) return 0;
-  // const leftDepth = maxDepth(root.left);
-  // const rightDepth = maxDepth(root.right);
-  // return Math.max(leftDepth, rightDepth) + 1;
+  if (!root) return 0;
+  const leftDepth = maxDepth(root.left);
+  const rightDepth = maxDepth(root.right);
+  return Math.max(leftDepth, rightDepth) + 1;
   // 另一种递归，自顶向下的
-  let ans = 0;
-  calcDepth(root, 0); // 起始根节点，深度为0
-  return ans;
-  function calcDepth(root, depth) {
-    if (!root) {
-      // 当前节点不存在，则比较现有深度
-      ans = Math.max(ans, depth);
-      return;
-    }
-    // 当前节点存在，继续遍历左节点，右节点，同时深度加1
-    calcDepth(root.left, depth + 1);
-    calcDepth(root.right, depth + 1);
-  }
+  // let ans = 0;
+  // calcDepth(root, 0); // 起始根节点，深度为0
+  // return ans;
+  // function calcDepth(root, depth) {
+  //   if (!root) {
+  //     // 当前节点不存在，则比较现有深度
+  //     ans = Math.max(ans, depth);
+  //     return;
+  //   }
+  //   // 当前节点存在，继续遍历左节点，右节点，同时深度加1
+  //   calcDepth(root.left, depth + 1);
+  //   calcDepth(root.right, depth + 1);
+  // }
 }
 // @lc code=end
 
@@ -72,6 +72,21 @@ function maxDepth(root) {
 //   }
 //   return ans;
 // }
+
+// function maxDepth (root) {
+//   // 递归, bottom to top
+//   if (!root) return 0; // 当前节点不存在，返回0
+//   const leftDepth = maxDepth(root.left); // 计算左子树的深度
+//   const rightDepth = maxDepth(root.right); // 右子树的深度
+//   return Math.max(leftDepth, rightDepth) + 1; // 树的最大深度等于左右子树最大深度 + 1
+// };
+// function maxDepth (root, depth = 0) {
+//   // 递归，top to bottom
+//   // depth表示父节点的深度，
+//   if (!root) return depth; // 节点不存在返会depth
+//   // 节点存在，则继续递归计算左右子数的深度，深度+1，取最大值
+//   return Math.max(maxDepth(root.left, depth + 1), maxDepth(root.right, depth + 1));
+// };
 
 // function maxDepth(root) {
 //   // 自顶向下的遍历

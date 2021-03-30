@@ -20,6 +20,33 @@
 //   // 快速幂递归
 //   // 时间复杂度O(logn):
 //   // 空间复杂度O(logn):
+//   if (n === 0) return 1;
+//   if (n < 0) return myPow(1 / x, -n);
+//   return (n % 2 === 1)
+//     ? x * myPow(x * x, Math.floor(n / 2))
+//     : myPow(x * x, Math.floor(n / 2));
+//   // if (n < 0) {
+//   //   x = 1 / x;
+//   //   n = -n;
+//   // }
+//   // return pow(x, n);
+
+//   // function pow(x, n) {
+//   //   if (n === 0) {
+//   //     return 1;
+//   //   }
+//   //   const y = pow(x, Math.floor(n / 2));
+//   //   return n % 2 === 1
+//   //     ? x * y * y
+//   //     : y * y;
+//   // }
+// }
+
+// function myPow(x, n) {
+//   // 快速幂迭代
+//   // 参考https://leetcode-cn.com/problems/powx-n/solution/powx-n-by-leetcode-solution/
+//   // 时间复杂度O(logn):
+//   // 空间复杂度O(1):
 //   if (n < 0) {
 //     x = 1 / x;
 //     n = -n;
@@ -27,40 +54,18 @@
 //   return pow(x, n);
 
 //   function pow(x, n) {
-//     if (n === 0) {
-//       return 1;
+//     let ans = 1;
+//     let xContribute = x;
+//     while (n > 0) {
+//       if (n % 2 === 1) {
+//         ans *= xContribute;
+//       }
+//       xContribute *= xContribute;
+//       n = Math.floor(n / 2);
 //     }
-//     const y = pow(x, Math.floor(n / 2));
-//     return n % 2 === 1
-//       ? x * y * y
-//       : y * y;
+//     return ans;
 //   }
 // }
-
-function myPow(x, n) {
-  // 快速幂迭代
-  // 参考https://leetcode-cn.com/problems/powx-n/solution/powx-n-by-leetcode-solution/
-  // 时间复杂度O(logn):
-  // 空间复杂度O(1):
-  if (n < 0) {
-    x = 1 / x;
-    n = -n;
-  }
-  return pow(x, n);
-
-  function pow(x, n) {
-    let ans = 1;
-    let xContribute = x;
-    while (n > 0) {
-      if (n % 2 === 1) {
-        ans *= xContribute;
-      }
-      xContribute *= xContribute;
-      n = Math.floor(n / 2);
-    }
-    return ans;
-  }
-}
 // function myPow(x, n) {
 //   // 暴力迭代，会超时
 //   // 时间复杂度O(n):

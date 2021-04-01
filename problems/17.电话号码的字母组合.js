@@ -13,42 +13,107 @@
  * @param {string} digits
  * @return {string[]}
  */
+
 function letterCombinations(digits) {
   // 回溯
   // 时间复杂度O(3^m*4^n): m是输入对应3个字母的数字个数，n是输入对应4个字母的数字个数，不同的字母组合有3^m*4^n种；
-  // 空间复杂度O(m+n): 递归调用的层数最多为m+n
-
-  const store = new Map();
-  store.set('2', 'abc');
-  store.set('3', 'def');
-  store.set('4', 'ghi');
-  store.set('5', 'jkl');
-  store.set('6', 'mno');
-  store.set('7', 'pqrs');
-  store.set('8', 'tuv');
-  store.set('9', 'wxyz');
-
-  const combination = []; // 保存已有的字母排列
-  const combinations = []; // 保存结果的
+  // 空间复杂度O(m+n): 递归的空间等于数字的长度
+  if (!digits || !digits.length) return [];
+  const phoneMap = new Map([
+    ['2', 'abc'],
+    ['3', 'def'],
+    ['4', 'ghi'],
+    ['5', 'jkl'],
+    ['6', 'mno'],
+    ['7', 'pqrs'],
+    ['8', 'tuv'],
+    ['9', 'wxyz'],
+  ]);
+  const combination = [];
+  const ans = [];
   backtrack(0);
-  return combinations;
-
+  return ans;
   function backtrack(index) {
-    if (digits.length === index) {
-      // 处理完所有数字，将字母组合存入结果
-      combinations.push(combination.join(''));
-    } else {
-      const digit = digits[index];
-      const tempStr = store.get(digit);
-      for (const tempChar of tempStr) {
-        combination.push(tempChar); // 当前字母放进已有的字母队列中
-        backtrack(index + 1); // 继续处理号码的下一位
-        combination.pop(); // 回退操作
-      }
+    if (index === digits.length) {
+      ans.push(combination.join(''));
+      return;
+    }
+    const digit = digits.charAt(index);
+    for (const char of phoneMap.get(digit)) {
+      combination.push(char);
+      backtrack(index + 1);
+      combination.pop();
     }
   }
 }
+// function letterCombinations(digits) {
+//   // 迭代
+//   // 时间复杂度O(3^m*4^n): m是输入对应3个字母的数字个数，n是输入对应4个字母的数字个数，不同的字母组合有3^m*4^n种；
+//   // 空间复杂度O(1): 如果算上答案的空间是O(3^m*4^n)
+
+//   const phoneMap = new Map([
+//     ['2', 'abc'],
+//     ['3', 'def'],
+//     ['4', 'ghi'],
+//     ['5', 'jkl'],
+//     ['6', 'mno'],
+//     ['7', 'pqrs'],
+//     ['8', 'tuv'],
+//     ['9', 'wxyz'],
+//   ]);
+//   const queue = [];
+//   if (!digits || !digits.length) return queue;
+//   queue.push('');
+//   for (const digit of digits) {
+//     // 层序遍历，需要记录当前队列的元素数量，
+//     const n = queue.length;
+//     for (let i = 0; i < n; i += 1) {
+//       const currentStr = queue.shift();
+//       for (const char of phoneMap.get(digit)) {
+//         // 对当前的字符串在分别加上对应的字母
+//         queue.push(currentStr + char);
+//       }
+//     }
+//   }
+//   return queue;
+// }
 // @lc code=end
+
+// function letterCombinations(digits) {
+//   // 回溯
+//   // 时间复杂度O(3^m*4^n): m是输入对应3个字母的数字个数，n是输入对应4个字母的数字个数，不同的字母组合有3^m*4^n种；
+//   // 空间复杂度O(m+n): 递归调用的层数最多为m+n
+
+//   const store = new Map();
+//   store.set('2', 'abc');
+//   store.set('3', 'def');
+//   store.set('4', 'ghi');
+//   store.set('5', 'jkl');
+//   store.set('6', 'mno');
+//   store.set('7', 'pqrs');
+//   store.set('8', 'tuv');
+//   store.set('9', 'wxyz');
+
+//   const combination = []; // 保存已有的字母排列
+//   const combinations = []; // 保存结果的
+//   backtrack(0);
+//   return combinations;
+
+//   function backtrack(index) {
+//     if (digits.length === index) {
+//       // 处理完所有数字，将字母组合存入结果
+//       combinations.push(combination.join(''));
+//     } else {
+//       const digit = digits[index];
+//       const tempStr = store.get(digit);
+//       for (const tempChar of tempStr) {
+//         combination.push(tempChar); // 当前字母放进已有的字母队列中
+//         backtrack(index + 1); // 继续处理号码的下一位
+//         combination.pop(); // 回退操作
+//       }
+//     }
+//   }
+// }
 
 // function letterCombinations(digits) {
 //   // BFS

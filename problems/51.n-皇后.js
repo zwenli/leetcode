@@ -76,50 +76,90 @@
 //   }
 // }
 
+// function solveNQueens(n) {
+//   // 哈希+回溯
+//   // 时间复杂度(n!): 遍历棋盘的时间为O(n!)
+//   // 空间复杂度O(n): 递归的空间复杂度取决于n
+//   if (n < 1) return [];
+//   const solutions = [];
+//   const queens = new Array(n).fill(-1);
+//   const columns = new Set();
+//   const diagonals1 = new Set(); // 撇 y + x
+//   const diagonals2 = new Set(); // 捺 y - x
+//   backtrack(queens, n, 0, columns, diagonals1, diagonals2);
+//   return solutions;
+//   function backtrack(queens, n, row, columns, diagonals1, diagonals2) {
+//     if (row === n) {
+//       solutions.push(generateBoard(queens, n));
+//       return;
+//     }
+//     for (let i = 0; i < n; i += 1) {
+//       if (
+//         columns.has(i)
+//         | diagonals1.has(row + i)
+//         | diagonals2.has(row - i)
+//       ) continue;
+//       queens[row] = i;
+//       columns.add(i);
+//       diagonals1.add(row + i);
+//       diagonals2.add(row - i);
+//       backtrack(queens, n, row + 1, columns, diagonals1, diagonals2);
+//       queens[row] = -1;
+//       columns.delete(i);
+//       diagonals1.delete(row + i);
+//       diagonals2.delete(row - i);
+//     }
+//   }
+
+//   // 生成棋局
+//   function generateBoard(queens, n) {
+//     const board = [];
+//     for (let i = 0; i < n; i += 1) {
+//       const row = new Array(n).fill('.');
+//       row[queens[i]] = 'Q';
+//       board.push(row.join(''));
+//     }
+//     return board;
+//   }
+// }
+
 function solveNQueens(n) {
-  // 哈希+回溯
-  // 时间复杂度(n!): 遍历棋盘的时间为O(n!)
+  // 回溯
+  // 时间复杂度(n! * n): 遍历棋盘的时间为O(n!) 每次判断位置有效性的时间复杂度为O(n)
   // 空间复杂度O(n): 递归的空间复杂度取决于n
   if (n < 1) return [];
   const solutions = [];
-  const queens = new Array(n).fill(-1);
-  const columns = new Set();
-  const diagonals1 = new Set(); // 撇 y + x
-  const diagonals2 = new Set(); // 捺 y - x
-  backtrack(queens, n, 0, columns, diagonals1, diagonals2);
+  const board = new Array(n).fill(null).map(() => new Array(n).fill('.'));
+  backtrack(board, n, 0);
   return solutions;
-  function backtrack(queens, n, row, columns, diagonals1, diagonals2) {
+  function backtrack(board, n, row) {
     if (row === n) {
-      solutions.push(generateBoard(queens, n));
+      const solution = board.map((item) => item.join(''));
+      solutions.push([...solution]);
       return;
     }
     for (let i = 0; i < n; i += 1) {
-      if (
-        columns.has(i)
-        | diagonals1.has(row + i)
-        | diagonals2.has(row - i)
-      ) continue;
-      queens[row] = i;
-      columns.add(i);
-      diagonals1.add(row + i);
-      diagonals2.add(row - i);
-      backtrack(queens, n, row + 1, columns, diagonals1, diagonals2);
-      queens[row] = -1;
-      columns.delete(i);
-      diagonals1.delete(row + i);
-      diagonals2.delete(row - i);
+      if (isVaild(board, row, i)) {
+        board[row][i] = 'Q';
+        backtrack(board, n, row + 1);
+        board[row][i] = '.';
+      }
     }
   }
-
-  // 生成棋局
-  function generateBoard(queens, n) {
-    const board = [];
-    for (let i = 0; i < n; i += 1) {
-      const row = new Array(n).fill('.');
-      row[queens[i]] = 'Q';
-      board.push(row.join(''));
+  function isVaild(board, row, column) {
+    // 列
+    for (let i = row - 1; i >= 0; i -= 1) {
+      if (board[i][column] === 'Q') return false;
     }
-    return board;
+    // 捺
+    for (let i = row - 1, j = column - 1; i >= 0 && j >= 0; i -= 1, j -= 1) {
+      if (board[i][j] === 'Q') return false;
+    }
+    // 撇
+    for (let i = row - 1, j = column + 1; i >= 0 && j < board.length; i -= 1, j += 1) {
+      if (board[i][j] === 'Q') return false;
+    }
+    return true;
   }
 }
 //------

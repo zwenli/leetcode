@@ -16,7 +16,7 @@
  */
 
 // function solveNQueens(n) {
-//   // 位运算回溯
+//   // 3. 位运算回溯
 //   // 时间复杂度(n!): 遍历棋盘的时间为O(n!)
 //   // 第一个皇后有N个选择，第二个皇后最多N-1个选择，因此总的选择最多不超过N!
 //   // 空间复杂度O(n): 递归的空间复杂度取决于n
@@ -77,7 +77,7 @@
 // }
 
 // function solveNQueens(n) {
-//   // 哈希+回溯
+//   // 2. 哈希+回溯
 //   // 时间复杂度(n!): 遍历棋盘的时间为O(n!)
 //   // 空间复杂度O(n): 递归的空间复杂度取决于n
 //   if (n < 1) return [];
@@ -113,55 +113,80 @@
 
 //   // 生成棋局
 //   function generateBoard(queens, n) {
-//     const board = [];
-//     for (let i = 0; i < n; i += 1) {
-//       const row = new Array(n).fill('.');
-//       row[queens[i]] = 'Q';
-//       board.push(row.join(''));
-//     }
-//     return board;
+//     // const board = [];
+//     // for (let i = 0; i < n; i += 1) {
+//     //   const row = new Array(n).fill('.');
+//     //   row[queens[i]] = 'Q';
+//     //   board.push(row.join(''));
+//     // }
+//     // return board;
+//     return queens.map((c) => `${'.'.repeat(c)}Q${'.'.repeat(n - c - 1)}`);
 //   }
 // }
 
 function solveNQueens(n) {
-  // 回溯
-  // 时间复杂度(n! * n): 遍历棋盘的时间为O(n!) 每次判断位置有效性的时间复杂度为O(n)
+  // 对1的优化
+  // 时间复杂度(n!): 遍历棋盘的时间为O(n!)
   // 空间复杂度O(n): 递归的空间复杂度取决于n
   if (n < 1) return [];
   const solutions = [];
-  const board = new Array(n).fill(null).map(() => new Array(n).fill('.'));
-  backtrack(board, n, 0);
+  backtrack(solutions, n);
   return solutions;
-  function backtrack(board, n, row) {
-    if (row === n) {
-      const solution = board.map((item) => item.join(''));
-      solutions.push([...solution]);
+  function backtrack(solutions, n, board = [], r = 0) {
+    if (r === n) {
+      solutions.push(board.map((c) => `${'.'.repeat(c)}Q${'.'.repeat(n - c - 1)}`));
       return;
     }
-    for (let i = 0; i < n; i += 1) {
-      if (isVaild(board, row, i)) {
-        board[row][i] = 'Q';
-        backtrack(board, n, row + 1);
-        board[row][i] = '.';
+    for (let c = 0; c < n; c += 1) {
+      // bc + br === c + r, bc - br === c - r 两个对角线
+      if (!board.some((bc, br) => bc === c || bc === c + r - br || bc === c - r + br)) {
+        board.push(c);
+        backtrack(solutions, n, board, r + 1);
+        board.pop();
       }
     }
   }
-  function isVaild(board, row, column) {
-    // 列
-    for (let i = row - 1; i >= 0; i -= 1) {
-      if (board[i][column] === 'Q') return false;
-    }
-    // 捺
-    for (let i = row - 1, j = column - 1; i >= 0 && j >= 0; i -= 1, j -= 1) {
-      if (board[i][j] === 'Q') return false;
-    }
-    // 撇
-    for (let i = row - 1, j = column + 1; i >= 0 && j < board.length; i -= 1, j += 1) {
-      if (board[i][j] === 'Q') return false;
-    }
-    return true;
-  }
 }
+
+// function solveNQueens(n) {
+//   // 1. 回溯
+//   // 时间复杂度(n! * n): 遍历棋盘的时间为O(n!) 每次判断位置有效性的时间复杂度为O(n)
+//   // 空间复杂度O(n): 递归的空间复杂度取决于n
+//   if (n < 1) return [];
+//   const solutions = [];
+//   const board = new Array(n).fill(null).map(() => new Array(n).fill('.'));
+//   backtrack(board, n, 0);
+//   return solutions;
+//   function backtrack(board, n, row) {
+//     if (row === n) {
+//       const solution = board.map((item) => item.join(''));
+//       solutions.push([...solution]);
+//       return;
+//     }
+//     for (let i = 0; i < n; i += 1) {
+//       if (isVaild(board, row, i)) {
+//         board[row][i] = 'Q';
+//         backtrack(board, n, row + 1);
+//         board[row][i] = '.';
+//       }
+//     }
+//   }
+//   function isVaild(board, row, column) {
+//     // 列
+//     for (let i = row - 1; i >= 0; i -= 1) {
+//       if (board[i][column] === 'Q') return false;
+//     }
+//     // 捺
+//     for (let i = row - 1, j = column - 1; i >= 0 && j >= 0; i -= 1, j -= 1) {
+//       if (board[i][j] === 'Q') return false;
+//     }
+//     // 撇
+//     for (let i = row - 1, j = column + 1; i >= 0 && j < board.length; i -= 1, j += 1) {
+//       if (board[i][j] === 'Q') return false;
+//     }
+//     return true;
+//   }
+// }
 //------
 // function solveNQueens(n) {
 //   // 回溯，用哈希表记录已占用的竖撇捺的，

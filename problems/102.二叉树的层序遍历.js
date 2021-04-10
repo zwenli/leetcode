@@ -16,31 +16,69 @@
  * @param {TreeNode} root
  * @return {number[][]}
  */
+
 function levelOrder(root) {
-  const res = [];
-  if (!root) return res;
-  let queue = [root];
-  let nextQueue = [];
-  let levelRes = [];
-  while (queue.length || nextQueue.length) {
-    while (queue.length) {
+  // bfs
+  // 时间复杂度O(n): 每个节点遍历一次
+  // 空间复杂度O(n): 递归调用栈的空间等于树的深度，极端情况下为单链，深度为O(n)
+  if (!root) return [];
+  const result = [];
+  const queue = [root];
+  while (queue.length) {
+    const level = [];
+    for (let i = queue.length - 1; i >= 0; i -= 1) {
       const node = queue.shift();
-      levelRes.push(node.val);
-      if (node.left) {
-        nextQueue.push(node.left);
-      }
-      if (node.right) {
-        nextQueue.push(node.right);
-      }
+      level.push(node.val);
+      if (node.left) queue.push(node.left);
+      if (node.right) queue.push(node.right);
     }
-    res.push(levelRes);
-    queue = nextQueue;
-    nextQueue = [];
-    levelRes = [];
+    result.push(level);
   }
-  return res;
+  return result;
 }
+
+// function levelOrder(root) {
+//   // dfs
+//   // 时间复杂度O(n): 每个节点遍历一次
+//   // 空间复杂度O(n): 递归调用栈的空间等于树的深度，极端情况下为单链，深度为O(n)
+//   const result = [];
+//   dfs(root, 0);
+//   return result;
+
+//   function dfs(root, level) {
+//     if (!root) return;
+//     if (!result[level]) result[level] = [];
+//     result[level].push(root.val);
+//     dfs(root.left, level + 1);
+//     dfs(root.right, level + 1);
+//   }
+// }
+
 // @lc code=end
+// function levelOrder(root) {
+//   const res = [];
+//   if (!root) return res;
+//   let queue = [root];
+//   let nextQueue = [];
+//   let levelRes = [];
+//   while (queue.length || nextQueue.length) {
+//     while (queue.length) {
+//       const node = queue.shift();
+//       levelRes.push(node.val);
+//       if (node.left) {
+//         nextQueue.push(node.left);
+//       }
+//       if (node.right) {
+//         nextQueue.push(node.right);
+//       }
+//     }
+//     res.push(levelRes);
+//     queue = nextQueue;
+//     nextQueue = [];
+//     levelRes = [];
+//   }
+//   return res;
+// }
 
 function TreeNode(val) {
   this.val = val;

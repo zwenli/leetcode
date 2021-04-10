@@ -6,6 +6,7 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
+    // 'plugin:prettier/recommended',
   ],
   globals: {
     Atomics: 'readonly',
@@ -22,7 +23,7 @@ module.exports = {
   rules: {
     'max-classes-per-file': ['error', 2],
     'no-continue': 0,
-    'no-shadow': ['error', { hoist: 'functions' }],
-    'no-use-before-define': ['error', { functions: true }],
+    'no-shadow': 'off',
+    'no-use-before-define': ['error', { functions: false }],
   },
 };

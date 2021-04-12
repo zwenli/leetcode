@@ -12,6 +12,7 @@ module.exports = {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
+  // TODO: typescript 会一直触发eslint报错
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 11,

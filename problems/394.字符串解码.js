@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /*
  * @lc app=leetcode.cn id=394 lang=javascript
  *
@@ -9,34 +10,34 @@
  * @param {string} s
  * @return {string}
  */
-var decodeString = function(s) {
-  let res = ''
-  let mul = 0
-  const stack = []
-  
-  for (char of s) {
+function decodeString(s) {
+  let res = '';
+  let mul = 0;
+  const stack = [];
+
+  for (const char of s) {
     if (char === '[') {
       stack.push({
         res,
         mul,
-      })
-      res = ''
-      mul = 0
+      });
+      res = '';
+      mul = 0;
     } else if (char === ']') {
-      const last = stack.pop()
-      res = last.res + res.repeat(last.mul)
+      const last = stack.pop();
+      res = last.res + res.repeat(last.mul);
     } else if (char >= 0 && char <= 9) {
-      mul = mul * 10 + Number(char)
+      mul = mul * 10 + Number(char);
     } else {
-      res += char
+      res += char;
     }
   }
-  return res
-};
+  return res;
+}
 // @lc code=end
 
-var res = decodeString("3[a]2[bc]")
-var res2 = decodeString("f3[a2[c]]")
+const res = decodeString('3[a]2[bc]');
+const res2 = decodeString('f3[a2[c]]');
 
 console.log(res); // "aaabcbc"
 console.log(res2); // "faccaccacc"

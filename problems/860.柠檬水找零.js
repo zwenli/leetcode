@@ -21,22 +21,20 @@ function lemonadeChange(bills) {
     if (bill === 5) {
       // 5，直接收入
       five += 1;
-    } else if (bill === 10) {
+    } else if (bill === 10 && five) {
       // 10 找回5
-      if (five === 0) return false;
       five -= 1;
       ten += 1;
-    } else if (bill === 20) {
+    } else if (bill === 20 && ten && five) {
       // 20，有两种方案找零，一是一张10，一张5，而是三张5
       // 两种方案更倾向与第一种，应为使用5的场景更多，需要尽可能保留5
-      if (ten > 0 && five > 0) {
-        ten -= 1;
-        five -= 1;
-      } else if (five >= 3) {
-        five -= 3;
-      } else {
-        return false;
-      }
+      // 这里就体现出贪心的思路
+      ten -= 1;
+      five -= 1;
+    } else if (bill === 20 && five >= 3) {
+      five -= 3;
+    } else {
+      return false;
     }
   }
   return true;

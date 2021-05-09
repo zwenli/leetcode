@@ -11,6 +11,23 @@
  * @return {number}
  */
 
+function uniquePaths(m, n) {
+  // 组合公式，
+  // m*m的格子里，左上角移动到右下角需要动一动m+n-1步，
+  // 其中有m-1次向下移动，n-1次向左移动，即组合数（组合公式 C(m,n) = n!/m!*(n-m)! = (n-m+1)(n-m+2)...n/m! ,(m <= n)）
+  // C(m-1, m+n-2) = (m+n-2)!/(m-1)!(n-1)!
+  // 时间复杂度O(m):
+  // 空间复杂度O(1):
+  if (!m || !n) return 0;
+  const N = m + n - 2;
+  const k = m - 1;
+  let ans = 1;
+  for (let i = 1; i <= k; i += 1) {
+    ans *= (N - k + i) / i;
+  }
+  return ans;
+}
+
 // function uniquePaths(m, n) {
 //   // 递归+缓存，自顶向下的
 //   if (!m || !n) return 0; // 网格不成立
@@ -26,20 +43,20 @@
 //   }
 // }
 
-function uniquePaths(m, n) {
-  // 递归+缓存，自底向上的
-  if (!m || !n) return 0; // 网格不成立
-  const cache = new Array(m).fill(0).map(() => new Array(n).fill(0));
-  return helper(0, 0);
-  function helper(i, j) {
-    // 到达边界，边界只有一条路可以走
-    if (i === m - 1 || j === n - 1) return 1;
-    if (!cache[i][j]) {
-      cache[i][j] = helper(i + 1, j) + helper(i, j + 1);
-    }
-    return cache[i][j];
-  }
-}
+// function uniquePaths(m, n) {
+//   // 递归+缓存，自底向上的
+//   if (!m || !n) return 0; // 网格不成立
+//   const cache = new Array(m).fill(0).map(() => new Array(n).fill(0));
+//   return helper(0, 0);
+//   function helper(i, j) {
+//     // 到达边界，边界只有一条路可以走
+//     if (i === m - 1 || j === n - 1) return 1;
+//     if (!cache[i][j]) {
+//       cache[i][j] = helper(i + 1, j) + helper(i, j + 1);
+//     }
+//     return cache[i][j];
+//   }
+// }
 
 // function uniquePaths(m, n) {
 //   // 动态规划

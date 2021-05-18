@@ -48,10 +48,11 @@ function maxSubArray(nums) {
 // function maxSubArray(nums) {
 //   // 动态规划
 //   // dp[i] 表示以nums[i]结尾的最大子序和
-//   // dp[i] = max(dp[i-1] + nums[i], nums[i])
+//   // dp[i] = max(dp[i-1] + nums[i], nums[i]) = nums[i] + max(0, dp[i - 1])
 //   // 如果加上dp[i-1]加上当前数值，还比当前小，收益减少
 //   // 那么改舍弃之前的结果,重新从nums[i]开始计算最大子序和
 //   // 之后再从dp数组中找到最大的结果
+//   // 也就是最大子序和 = 当前元素自身最大，或者包含之前后最大
 //   // 时间复杂度O(n): n为数组长度
 //   // 空间复杂度O(n): dp数组需要O(n)的空间
 //   const n = nums.length;

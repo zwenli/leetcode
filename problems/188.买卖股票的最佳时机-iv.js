@@ -95,6 +95,7 @@ function maxProfit(k, prices) {
   const n = prices.length;
   if (n < 2) return 0;
   // 最大可交易次数k是不能超过n/2，天数的一半，多处的是无意义的，也无法发起多余的交易
+  // TODO：其实如果k>n/2，就相当于不限次数交易，用贪心更快
   k = Math.min(k, Math.floor(n / 2));
   const dp = new Array(n).fill(0).map(
     () => new Array(k + 1).fill(0).map(

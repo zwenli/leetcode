@@ -46,7 +46,7 @@ function canJump(nums) {
 //   // 空间复杂度O(1)
 //   if (!nums || !nums.length) return false;
 //   const n = nums.length;
-//   let rightMost = 0; // 最远可以到达的位置
+//   let rightMost = 0; // 最远可以到达的位置d
 //   for (let i = 0; i < nums.length; i += 1) {
 //     // 当最远可以到达的位置小于当前位置时，其实也说明无法跳到当前这个位置了
 //     // 当前位置还在最远可以到达的位置范围内，继续更新最远到达位置
@@ -112,5 +112,8 @@ const res3 = canJump([1, 2, 3]); // true
 // 1. 贪心算法
 // TODO:
 // 2. 暴力（回溯）一般是会超时的
-// 3. 动态规划？
+// 3. 动态规划
 // 4. 迭代
+
+// 迭代，贪心的，都是要维护一个最远可到达位置maxReach
+// 满足条件i < n && i <= maxReach，i还是在有效范围内，继续遍历

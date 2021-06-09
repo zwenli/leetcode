@@ -37,6 +37,7 @@ function minWindow(s, t) {
   let minLen = Infinity; // 最小覆盖子串的长度
   // [left ,right)
   while (right < s.length) {
+    // 要加入的字符
     const rightChar = s[right];
     // 判断字母是否为t所需要的
     if (need[rightChar] !== undefined) {
@@ -58,6 +59,7 @@ function minWindow(s, t) {
         minLen = right - left;
         begin = left;
       }
+      // 要移除的字符
       const leftChar = s[left];
       if (need[leftChar] !== undefined) {
         // 更新字符还需要数量
@@ -72,7 +74,7 @@ function minWindow(s, t) {
       left += 1;
     }
   }
-  return minLen === Infinity ? '' : s.slice(begin, begin + minLen);
+  return minLen === Infinity ? '' : s.substr(begin, minLen);
 }
 
 // function minWindow(s, t) {

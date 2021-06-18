@@ -21,7 +21,7 @@ class UnionFind {
       for (let j = 0; j < n; j += 1) {
         if (grid[i][j] === '1') {
           this.parent[i * n + j] = i * n + j;
-          // 假设每个1都是独立的岛屿，之后相邻岛屿合并
+          // 假设每个1都是独立的岛屿，之后相邻岛屿合并成同一个集合
           this.count += 1;
         }
       }

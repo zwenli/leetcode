@@ -89,7 +89,7 @@ function generateParenthesis(n) {
 //   }
 // }
 // function generateParenthesis(n) {
-//   // 2. 递归dfs，剪枝优化
+//   // 2. 递归dfs，剪枝优化，回溯
 //   // 时间复杂度O():
 //   // 空间复杂度O():
 //   const res = [];

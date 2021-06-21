@@ -162,72 +162,102 @@
 
 function ladderLength(beginWord, endWord, wordList) {
   // 2. 双向bfs
-  // TODO: 一个visited就可以处理了
-  // const wordSet = new Set(wordList);
-  // if (!wordSet.size || !wordSet.has(endWord)) return 0;
-  // let beginSet = new Set([beginWord]);
-  // let endSet = new Set([endWord]);
-  // let beginVisited = new Set([beginWord]);
-  // let endVisited = new Set([endWord]);
-  // let step = 1;
-  // while (beginSet.size && endSet.size) {
-  //   // 从小的队列开始遍历
-  //   if (beginSet.size > endSet.size) {
-  //     [beginSet, endSet] = [endSet, beginSet];
-  //     [beginVisited, endVisited] = [endVisited, beginVisited];
-  //   }
-  //   const nextSet = new Set();
-  //   for (const currentWord of beginSet) {
-  //     if (endSet.has(currentWord)) return step;
-  //     for (let i = 0; i < currentWord.length; i += 1) {
-  //       for (let code = 'a'.charCodeAt(0); code <= 'z'.charCodeAt(0); code += 1) {
-  //         const char = String.fromCharCode(code);
-  //         // if (currentWord[i] === char) continue;
-  //         const nextWord = currentWord.slice(0, i) + char + currentWord.slice(i + 1);
-  //         if (wordSet.has(nextWord) && !beginVisited.has(nextWord)) {
-  //           nextSet.add(nextWord);
-  //           beginVisited.add(nextWord);
-  //         }
-  //       }
-  //     }
-  //   }
-  //   beginSet = nextSet;
-  //   step += 1;
-  // }
-  // return 0;
   const wordSet = new Set(wordList);
   if (!wordSet.size || !wordSet.has(endWord)) return 0;
+  const aCharCode = 'a'.charCodeAt(0);
+  const zCharCode = 'z'.charCodeAt(0);
+  const wordLen = beginWord.length;
   let beginSet = new Set([beginWord]);
   let endSet = new Set([endWord]);
-  const visited = new Set();
   let step = 1;
   while (beginSet.size && endSet.size) {
-    // 从小的队列开始遍历
-    if (beginSet.size > endSet.size) {
-      [beginSet, endSet] = [endSet, beginSet];
-    }
+    step += 1;
     const nextSet = new Set();
-    for (const currentWord of beginSet) {
-      for (let i = 0; i < currentWord.length; i += 1) {
-        for (let code = 'a'.charCodeAt(0); code <= 'z'.charCodeAt(0); code += 1) {
+    for (const word of beginSet) {
+      for (let i = 0; i < wordLen; i += 1) {
+        for (let code = aCharCode; code <= zCharCode; code += 1) {
           const char = String.fromCharCode(code);
-          const nextWord = currentWord.slice(0, i) + char + currentWord.slice(i + 1);
-          if (endSet.has(nextWord)) return step + 1;
-          if (wordSet.has(nextWord) && !visited.has(nextWord)) {
+          const nextWord = word.slice(0, i) + char + word.slice(i + 1);
+          if (endSet.has(nextWord)) return step;
+          if (wordSet.has(nextWord)) {
             nextSet.add(nextWord);
-            visited.add(nextWord);
+            wordSet.delete(nextWord);
           }
         }
       }
     }
     beginSet = nextSet;
-    step += 1;
+    if (beginSet.size > endSet.size) {
+      [beginSet, endSet] = [endSet, beginSet];
+    }
   }
   return 0;
 }
 
 // function ladderLength(beginWord, endWord, wordList) {
+//   双向bfs
+//   const wordSet = new Set(wordList);
+//   if (!wordSet.size || !wordSet.has(endWord)) return 0;
+//   let beginSet = new Set([beginWord]);
+//   let endSet = new Set([endWord]);
+//   const visited = new Set();
+//   let step = 1;
+//   while (beginSet.size && endSet.size) {
+//     // 从小的队列开始遍历
+//     if (beginSet.size > endSet.size) {
+//       [beginSet, endSet] = [endSet, beginSet];
+//     }
+//     const nextSet = new Set();
+//     for (const currentWord of beginSet) {
+//       for (let i = 0; i < currentWord.length; i += 1) {
+//         for (let code = 'a'.charCodeAt(0); code <= 'z'.charCodeAt(0); code += 1) {
+//           const char = String.fromCharCode(code);
+//           const nextWord = currentWord.slice(0, i) + char + currentWord.slice(i + 1);
+//           if (endSet.has(nextWord)) return step + 1;
+//           if (wordSet.has(nextWord) && !visited.has(nextWord)) {
+//             nextSet.add(nextWord);
+//             visited.add(nextWord);
+//           }
+//         }
+//       }
+//     }
+//     beginSet = nextSet;
+//     step += 1;
+//   }
+//   return 0;
+// }
+
+// function ladderLength(beginWord, endWord, wordList) {
 //   // 1. bfs
+//   const wordSet = new Set(wordList);
+//   if (!wordSet.has(endWord)) return 0;
+//   const queue = [beginWord];
+//   const wordLen = beginWord.length;
+//   const aCharCode = 'a'.charCodeAt(0);
+//   const zCharCode = 'z'.charCodeAt(0);
+//   let level = 1;
+//   while (queue.length) {
+//     for (let i = queue.length - 1; i >= 0; i -= 1) {
+//       const word = queue.shift();
+//       if (word === endWord) return level;
+//       for (let j = 0; j < wordLen; j += 1) {
+//         for (let code = aCharCode; code <= zCharCode; code += 1) {
+//           const char = String.fromCharCode(code);
+//           const nextWord = word.slice(0, j) + char + word.slice(j + 1);
+//           if (wordSet.has(nextWord)) {
+//             queue.push(nextWord);
+//             wordSet.delete(nextWord);
+//           }
+//         }
+//       }
+//     }
+//     level += 1;
+//   }
+//   return 0;
+// }
+
+// function ladderLength(beginWord, endWord, wordList) {
+//   // bfs
 //   // TODO: 抽出方法addNextWords(word, wordSet, visited)
 //   const wordSet = new Set(wordList);
 //   if (!wordSet.size || !wordSet.has(endWord)) return 0;

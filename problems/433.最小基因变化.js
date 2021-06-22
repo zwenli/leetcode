@@ -15,6 +15,43 @@
  * @return {number}
  */
 
+function minMutation(start, end, bank) {
+  // 双向BFS
+  const bankSet = new Set(bank);
+  if (!bankSet.size || !bankSet.has(end)) return -1;
+  let level = 0;
+  const n = start.length;
+  const BASE = ['A', 'C', 'G', 'T'];
+  let startSet = new Set([start]);
+  let endSet = new Set([end]);
+  while (startSet.size && endSet.size) {
+    level += 1;
+    const nextSet = new Set();
+    for (const dna of startSet) {
+      const dnaArr = dna.split('');
+      for (let i = 0; i < n; i += 1) {
+        for (const char of BASE) {
+          if (dnaArr[i] === char) continue;
+          const old = dnaArr[i];
+          dnaArr[i] = char;
+          const next = dnaArr.join('');
+          if (endSet.has(next)) return level;
+          if (bankSet.has(next)) {
+            nextSet.add(next);
+            bankSet.delete(next);
+          }
+          dnaArr[i] = old;
+        }
+      }
+    }
+    startSet = nextSet;
+    if (startSet.size > endSet.size) {
+      [startSet, endSet] = [endSet, startSet];
+    }
+  }
+  return -1;
+}
+
 // function minMutation(start, end, bank) {
 //   // 双向广度优先搜索
 //   // 时间复杂度O(m*n): bank的长度为m，end的长度为n，bank中节点只遍历一次O(m)，处理下一个突变基因的时间为O(n)
@@ -50,32 +87,32 @@
 //   return -1;
 // }
 
-function minMutation(start, end, bank) {
-  // bfs, 遍历路径不影响结果，只要能找到突变的最短路径即可，故移除已访问的不影响结果
-  // 时间复杂度O(m*n): bank的长度为m，end的长度为n，bank中节点只遍历一次O(m)，处理下一个突变基因的时间为O(n)
-  // 空间复杂度O(n): bankSet的空间为O(n)，队列的空间不会超过bank的长度，也就是O(n)
-  const bankSet = new Set(bank);
-  if (!bankSet.has(end)) return -1;
-  const BASE = ['A', 'C', 'T', 'G']; // 碱基
-  const queue = [[start, 0]];
-  while (queue.length) {
-    const [node, step] = queue.shift();
-    if (node === end) return step;
-    for (let i = 0; i < node.length; i += 1) {
-      // 基因突变
-      for (const char of BASE) {
-        if (node[i] === char) continue; // 没有变化，继续下一个
-        const next = node.slice(0, i) + char + node.slice(i + 1);
-        if (bankSet.has(next)) {
-          // 找到下一个突变的基因，推入队列，同时将当前的基因移除bank
-          queue.push([next, step + 1]);
-          bankSet.delete(node);
-        }
-      }
-    }
-  }
-  return -1;
-}
+// function minMutation(start, end, bank) {
+//   // bfs, 遍历路径不影响结果，只要能找到突变的最短路径即可，故移除已访问的不影响结果
+//   // 时间复杂度O(m*n): bank的长度为m，end的长度为n，bank中节点只遍历一次O(m)，处理下一个突变基因的时间为O(n)
+//   // 空间复杂度O(n): bankSet的空间为O(n)，队列的空间不会超过bank的长度，也就是O(n)
+//   const bankSet = new Set(bank);
+//   if (!bankSet.has(end)) return -1;
+//   const BASE = ['A', 'C', 'T', 'G']; // 碱基
+//   const queue = [[start, 0]];
+//   while (queue.length) {
+//     const [node, step] = queue.shift();
+//     if (node === end) return step;
+//     for (let i = 0; i < node.length; i += 1) {
+//       // 基因突变
+//       for (const char of BASE) {
+//         if (node[i] === char) continue; // 没有变化，继续下一个
+//         const next = node.slice(0, i) + char + node.slice(i + 1);
+//         if (bankSet.has(next)) {
+//           // 找到下一个突变的基因，推入队列，同时将当前的基因移除bank
+//           queue.push([next, step + 1]);
+//           bankSet.delete(node);
+//         }
+//       }
+//     }
+//   }
+//   return -1;
+// }
 
 // function minMutation(start, end, bank) {
 //   // dfs

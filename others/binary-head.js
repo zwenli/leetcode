@@ -102,6 +102,92 @@ class MaxPQ {
   }
 }
 
+/**
+ * 最小堆优先队列
+ */
+class MinPQ {
+  constructor(compareTo = (a, b) => a - b) {
+    this.N = 0;
+    this.pq = [null];
+    this.compareTo = compareTo;
+  }
+
+  min() {
+    return this.pq[1];
+  }
+
+  delMin() {
+    const min = this.pq[1];
+    // 把最小元素换到最后，删除
+    this.exch(1, this.N);
+    this.pq[this.N] = null;
+    this.N -= 1;
+    // 让 pq[1] 下沉到正确位置
+    this.sink(1);
+    return min;
+  }
+
+  insert(e) {
+    this.N += 1;
+    // 先把新元素加到最后
+    this.pq[this.N] = e;
+    // 然后让它上浮到正确的位置
+    this.swim(this.N);
+  }
+
+  // 上浮第k个元素
+  swim(k) {
+    // 如果浮到堆顶，就不能再上浮了
+    while (k > 1 && this.greater(this.parent(k), k)) {
+      // k小于父元素，交换
+      this.exch(k, this.parent(k));
+      k = this.parent(k);
+    }
+  }
+
+  // 下沉第k个元素
+  sink(k) {
+    while (this.left(k) <= this.N) {
+      // 假设左边元素较小
+      let j = this.left(k);
+      // 如果右边元素存在，比较大小
+      if (j < this.N && this.greater(j, j + 1)) {
+        j += 1;
+      }
+      // 如果k比两个子元素都小，不必下沉了
+      if (this.greater(j, k)) break;
+      this.exch(j, k);
+      k = j;
+    }
+  }
+
+  greater(i, j) {
+    return this.compareTo(this.pq[i], this.pq[j]) > 0;
+  }
+
+  exch(i, j) {
+    const temp = this.pq[i];
+    this.pq[i] = this.pq[j];
+    this.pq[j] = temp;
+  }
+
+  parent(k) {
+    return k >> 1;
+  }
+
+  left(k) {
+    return k * 2;
+  }
+
+  right(k) {
+    return k * 2 + 1;
+  }
+
+  get size() {
+    return this.N;
+  }
+}
+
 const mpq = new MaxPQ();
 mpq.insert(3); //
 mpq.insert(6); //
@@ -112,3 +198,11 @@ mpq.delMax(); // 8
 mpq.max(); // 6
 mpq.insert(11);
 mpq.max(); // 11
+
+const minpq = new MinPQ();
+minpq.insert(5);
+minpq.insert(3);
+minpq.insert(8);
+console.log(minpq.min()); // 3
+console.log(minpq.delMin()); // 3
+console.log(minpq.min()); // 5

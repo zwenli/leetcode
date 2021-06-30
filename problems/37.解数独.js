@@ -119,6 +119,49 @@ function solveSudoku(board) {
 // }
 
 // function solveSudoku(board) {
+//   // 回溯
+//   const spaces = [];
+//   const rows = new Array(9).fill(false).map(() => new Array(9).fill(false));
+//   const cols = new Array(9).fill(false).map(() => new Array(9).fill(false));
+//   const blocks = new Array(9).fill(false).map(() => new Array(9).fill(false));
+//   for (let i = 0; i < 9; i += 1) {
+//     for (let j = 0; j < 9; j += 1) {
+//       if (board[i][j] === '.') {
+//         spaces.push([i, j]);
+//       } else {
+//         const digit = board[i][j] - 1;
+//         const k = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+//         rows[i][digit] = true;
+//         cols[j][digit] = true;
+//         blocks[k][digit] = true;
+//       }
+//     }
+//   }
+//   backtrack(0);
+//   return board;
+//   function backtrack(pos) {
+//     if (pos === spaces.length) return true;
+//     const [i, j] = spaces[pos];
+//     const k = Math.floor(i / 3) * 3 + Math.floor(j / 3);
+//     for (let digit = 0; digit < 9; digit += 1) {
+//       if (rows[i][digit] || cols[j][digit] || blocks[k][digit]) {
+//         continue;
+//       }
+//       rows[i][digit] = true;
+//       cols[j][digit] = true;
+//       blocks[k][digit] = true;
+//       board[i][j] = String(digit + 1);
+//       if (backtrack(pos + 1)) return true;
+//       rows[i][digit] = false;
+//       cols[j][digit] = false;
+//       blocks[k][digit] = false;
+//       board[i][j] = '.';
+//     }
+//     return false;
+//   }
+// }
+
+// function solveSudoku(board) {
 //   // 回溯+哈希表
 //   // time complexity O(9^(9*9)): 把无效情况也考虑进去的话，状态树就是个9叉树，深度为81
 //   // 每个格子有九个数字可以填写，总共有81个格子

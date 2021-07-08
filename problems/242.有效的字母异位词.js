@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 /*
  * @lc app=leetcode.cn id=242 lang=javascript
  *
@@ -12,27 +13,45 @@
  */
 
 function isAnagram(s, t) {
-  // 3. 哈希表，对2的优化，解决unicode的问题
-  // 时间复杂度O(n): n为s的长度
-  // 空间复杂度O(S): S = 26，字母表需要O(S)的空间
+  // 哈希
+  // 相关排序，计数排序
   if (s.length !== t.length) return false;
-  const table = new Map(); // codepoint -> time
-  for (let i = 0; i < s.length; i += 1) {
-    const charCodePoint = s.codePointAt(i);
-    table.set(
-      charCodePoint,
-      table.has(charCodePoint) ? table.get(charCodePoint) + 1 : 1,
-    );
+  const map = {};
+  for (const char of s) {
+    if (!map[char]) map[char] = 0;
+    map[char] += 1;
   }
-  for (let i = 0; i < t.length; i += 1) {
-    const charCodePoint = t.codePointAt(i);
-    if (!table.has(charCodePoint) || table.get(charCodePoint) - 1 < 0) {
+  for (const char of t) {
+    if (!map[char] || map[char] - 1 < 0) {
       return false;
     }
-    table.set(charCodePoint, table.get(charCodePoint) - 1);
+    map[char] -= 1;
   }
   return true;
 }
+
+// function isAnagram(s, t) {
+//   // 3. 哈希表，对2的优化，解决unicode的问题
+//   // 时间复杂度O(n): n为s的长度
+//   // 空间复杂度O(S): S = 26，字母表需要O(S)的空间
+//   if (s.length !== t.length) return false;
+//   const table = new Map(); // codepoint -> time
+//   for (let i = 0; i < s.length; i += 1) {
+//     const charCodePoint = s.codePointAt(i);
+//     table.set(
+//       charCodePoint,
+//       table.has(charCodePoint) ? table.get(charCodePoint) + 1 : 1,
+//     );
+//   }
+//   for (let i = 0; i < t.length; i += 1) {
+//     const charCodePoint = t.codePointAt(i);
+//     if (!table.has(charCodePoint) || table.get(charCodePoint) - 1 < 0) {
+//       return false;
+//     }
+//     table.set(charCodePoint, table.get(charCodePoint) - 1);
+//   }
+//   return true;
+// }
 
 // function isAnagram(s, t) {
 //   // 2. 哈希表

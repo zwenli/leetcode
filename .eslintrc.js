@@ -26,5 +26,6 @@ module.exports = {
     'no-continue': 0,
     'no-shadow': 'off',
     'no-use-before-define': ['error', { functions: false }],
+    'no-restricted-syntax': ['ForInStatement'], // 允许 of
   },
 };

@@ -12,28 +12,44 @@
  * @param {string[]} strs
  * @return {string[][]}
  */
+
 function groupAnagrams(strs) {
   // 2. 哈希表计数
-  // 用字母表对字符串字母计数，生成key
-  // 时间复杂度O(n(k+S)): n为strs的长度，k为strs中最大字符串的长度。S = 26,字母数量，字符集
-  // 需要遍历n个字符串，每个字符串，需要O(k)的时间遍历，生成哈希表的键需要O(S)，更新哈希表需要O(1)，
-  // 总的时间为O(n(k+S))
-  // 空间复杂度(n(k+S)): n为strs的长度，k为strs中最大字符串的长度。
-  // 需要用哈希表存储所有字符串，而记录每个字符串中字母出现的次数需要O(S)的空间
-  if (!strs || !strs.length) return [[]];
-  const A_CODE_POINT = 'a'.codePointAt(0);
-  const map = new Map();
-  for (let i = 0; i < strs.length; i += 1) {
-    const str = strs[i];
-    const table = new Array(26).fill(0); // 26个字母
-    for (let j = 0; j < str.length; j += 1) {
-      table[str.codePointAt(j) - A_CODE_POINT] += 1;
+  const A_CHAR_CODE = 'a'.charCodeAt(0);
+  const map = {};
+  for (const s of strs) {
+    const count = new Array(26).fill(0);
+    for (const ch of s) {
+      count[ch.charCodeAt(0) - A_CHAR_CODE] += 1;
     }
-    const key = table.toString();
-    map.has(key) ? map.get(key).push(str) : map.set(key, [str]);
+    const key = count.toString();
+    map[key] ? map[key].push(s) : map[key] = [s];
   }
-  return Array.from(map.values());
+  return Object.values(map);
 }
+
+// function groupAnagrams(strs) {
+//   // 2. 哈希表计数
+//   // 用字母表对字符串字母计数，生成key
+//   // 时间复杂度O(n(k+S)): n为strs的长度，k为strs中最大字符串的长度。S = 26,字母数量，字符集
+//   // 需要遍历n个字符串，每个字符串，需要O(k)的时间遍历，生成哈希表的键需要O(S)，更新哈希表需要O(1)，
+//   // 总的时间为O(n(k+S))
+//   // 空间复杂度(n(k+S)): n为strs的长度，k为strs中最大字符串的长度。
+//   // 需要用哈希表存储所有字符串，而记录每个字符串中字母出现的次数需要O(S)的空间
+//   if (!strs || !strs.length) return [];
+//   const A_CODE_POINT = 'a'.codePointAt(0);
+//   const map = new Map();
+//   for (let i = 0; i < strs.length; i += 1) {
+//     const str = strs[i];
+//     const table = new Array(26).fill(0); // 26个字母
+//     for (let j = 0; j < str.length; j += 1) {
+//       table[str.codePointAt(j) - A_CODE_POINT] += 1;
+//     }
+//     const key = table.toString();
+//     map.has(key) ? map.get(key).push(str) : map.set(key, [str]);
+//   }
+//   return Array.from(map.values());
+// }
 
 // function groupAnagrams(strs) {
 //   // 排序
@@ -52,12 +68,14 @@ function groupAnagrams(strs) {
 // }
 // @lc code=end
 
+const assert = require('assert').strict;
+
 const res1 = groupAnagrams(['eat', 'tea', 'tan', 'ate', 'nat', 'bat']);
-// [
-//   ["ate","eat","tea"],
-//   ["nat","tan"],
-//   ["bat"]
-// ]
+assert.deepEqual(res1, [
+  ["ate","eat","tea"],
+  ["nat","tan"],
+  ["bat"]
+]);
 
 // 结合242，判断是否为字母异位词，有两种思路（目前已知的）排序，哈希表
 // 第三种是质数

@@ -6,20 +6,20 @@ module.exports = {
   },
   extends: [
     'airbnb-base',
-    // 'plugin:prettier/recommended',
+    'plugin:prettier/recommended',
   ],
   globals: {
     Atomics: 'readonly',
     SharedArrayBuffer: 'readonly',
   },
   // TODO: typescript 会一直触发eslint报错
-  // parser: '@typescript-eslint/parser',
+  parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 11,
     sourceType: 'module',
   },
   plugins: [
-    // '@typescript-eslint',
+    '@typescript-eslint',
   ],
   rules: {
     'max-classes-per-file': ['error', 2],

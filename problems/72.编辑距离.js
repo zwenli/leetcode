@@ -13,29 +13,57 @@
 
 function minDistance(word1, word2) {
   // 动态规划，空间优化
-  // time complexity O(mn):
-  // space complexity O(n): dp O(2n)
-  const m = word1.length;
-  const n = word2.length;
-  if (m * n === 0) return m + n;
-  let pre = new Array(n + 1).fill(0);
-  let cur = new Array(n + 1).fill(0);
+  // time complexity O(mn)
+  // space complexity O(n)
+  const m = word1.length
+  const n = word2.length
+  if (m * n === 0) return m + n
+  const dp = new Array(n + 1).fill(0)
+  let pre = void 0
   for (let j = 1; j <= n; j += 1) {
-    pre[j] = j;
+    dp[j] = j
   }
   for (let i = 1; i <= m; i += 1) {
-    cur[0] = i; // dp[i][0] = i
+    pre = dp[0]
+    dp[0] = i
     for (let j = 1; j <= n; j += 1) {
+      const tmp = dp[j]
       if (word1[i - 1] === word2[j - 1]) {
-        cur[j] = pre[j - 1];
+        dp[j] = pre
       } else {
-        cur[j] = 1 + Math.min(cur[j - 1], pre[j], pre[j - 1]);
+        dp[j] = Math.min(dp[j - 1], dp[j], pre) + 1
       }
+      pre = tmp
     }
-    [pre, cur] = [cur, pre];
   }
-  return pre[n];
+  return dp[n]
 }
+
+// function minDistance(word1, word2) {
+//   // 动态规划，空间优化
+//   // time complexity O(mn):
+//   // space complexity O(n): dp O(2n)
+//   const m = word1.length;
+//   const n = word2.length;
+//   if (m * n === 0) return m + n;
+//   let pre = new Array(n + 1).fill(0);
+//   let cur = new Array(n + 1).fill(0);
+//   for (let j = 1; j <= n; j += 1) {
+//     pre[j] = j;
+//   }
+//   for (let i = 1; i <= m; i += 1) {
+//     cur[0] = i; // dp[i][0] = i
+//     for (let j = 1; j <= n; j += 1) {
+//       if (word1[i - 1] === word2[j - 1]) {
+//         cur[j] = pre[j - 1];
+//       } else {
+//         cur[j] = 1 + Math.min(cur[j - 1], pre[j], pre[j - 1]);
+//       }
+//     }
+//     [pre, cur] = [cur, pre];
+//   }
+//   return pre[n];
+// }
 
 // function minDistance(word1, word2) {
 //   // 动态规划，滚动数组
@@ -106,10 +134,11 @@ function minDistance(word1, word2) {
 // }
 // @lc code=end
 
-const res1 = minDistance('horse', 'ros');
-// 3
-const res2 = minDistance('intention', 'execution');
-// 5
+const assert = require('assert').strict
+const res1 = minDistance('horse', 'ros')
+assert.equal(res1, 3)
+const res2 = minDistance('intention', 'execution')
+assert.equal(res2, 5)
 
 // 设单词A[i], B[j]，分别为[0,i]的A单词子串，[0,j]的B单词字串
 // 每个单词有三种操作，两个单词对应有6种操作状态，但是6种状态是有等价的，最终可合并成三种
@@ -125,10 +154,11 @@ const res2 = minDistance('intention', 'execution');
 // 以A='horse',B='ros'
 // 1. 在单词A中添加一个字符，假设已知'hors'到'ros'编辑距离为a，那么
 // 'horse'到‘ros’的距离不会超过a+1，这是应为通过a次操作后可以将‘hors’
-// 和‘ros’变成相同的字符串，只需要一次额外的操作，在单词A的末尾添加‘s’，
+// 和‘ros’变成相同的字符串，只需要一次额外的操作，在单词A的末尾添加‘e’，
 // 就能在a+1次操作之后将‘horse’和‘ros’变成相同的字符串
 // 2. 在单词B中添加一个字符，‘horse’到‘ro’的编辑距离为b，那么
 // ‘horse’到‘ros’为b+1，证明同上
 // 3. 修改单词A的一个字符，已知'hors'到‘ro’的编辑距离为c，
 // 那么'horse'到‘ros’为c+1，证明同上，c的基础上，对单词A加一步操作，修改单词即可
+// （先同时加上同一个字符，此时不用增加操作步数，在修改单词A的新增的字符，操作仍1步）
 // 综上，'horse'到‘ros’的编辑距离应该为min(a+1,b+1,c+1)

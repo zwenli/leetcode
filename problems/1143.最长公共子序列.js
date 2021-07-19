@@ -108,14 +108,35 @@ function longestCommonSubsequence(text1, text2) {
 // }
 // @lc code=end
 
-const res1 = longestCommonSubsequence('abcde', 'ace');
-// 3
-const res2 = longestCommonSubsequence('abc', 'abc');
-// 3
-const res3 = longestCommonSubsequence('abc', 'def');
-// 0
-const res4 = longestCommonSubsequence('abcba', 'abcbcba');
-// 5
+const aasert = require('assert').strict;
 
-// 递归+缓存
-// 动态规划
+const res1 = longestCommonSubsequence('abcde', 'ace');
+assert.equal(res1, 3);
+const res2 = longestCommonSubsequence('abc', 'abc');
+assert.equal(res2, 3);
+const res3 = longestCommonSubsequence('abc', 'def');
+assert.equal(res3, 0);
+const res4 = longestCommonSubsequence('abcba', 'abcbcba');
+assert.equal(res4, 5);
+
+/**
+解法：
+1. 递归+缓存
+
+2.动态规划
+dp[i, j]表示S1的子串[0,i]和S2子串[0,j]的公共子序列最大长度, 转移方程如下：
+if s1[i] === s2[j], dp[i,j] = dp[i-1, j-1] + 1;
+otherwise, dp[i, j] = Math.max(dp[i-1, j], dp[i, j - 1])
+为了方便计算，dp可以增加一行一列表示空字符串‘’,
+那么边界情况可简化为
+dp[0,j] = dp[i, 0] = 0; // 空字符串的最长公共子序列的长度为0
+
+关于 otherwise, dp[i, j] = Math.max(dp[i-1, j], dp[i, j - 1])
+在s1[i]和s2[j]不相等时，为什么不加上dp[i-1,j-1]对比了，
+其实是包含在内的，三项
+dp[i-1, j] 表示 S1(0, i-1)和S2(0,j)的最长公共子序列
+dp[i, j-1] 表示 S1(0, i)和S2(0,j-1)的最长公共子序列
+dp[i-1, j-1] 表示 S1(0, i-1)和S2(0,j-1)的最长公共子序列
+取三项最大值，而显然前两项是包含第三项的，
+前两项的状态可以通过第三项转移过来的，故可以省略第三项
+ */

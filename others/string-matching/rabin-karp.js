@@ -12,7 +12,7 @@
 //   let txtHash = hash(txt, M)
 
 //   if (patHash === txtHash && check(0)) return 0
-//   for (let i = M; i <= N; i += 1) {
+//   for (let i = M; i < N; i += 1) {
 //     txtHash = (txtHash + Q - ((txt.charCodeAt(i - M) * RM) % Q)) % Q // 加上Q防止负数
 //     txtHash = (txtHash * R + txt.charCodeAt(i)) % Q
 //     if (patHash === txtHash) {

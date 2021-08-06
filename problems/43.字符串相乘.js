@@ -15,6 +15,8 @@ function multiply(num1, num2) {
   // https://leetcode.com/problems/multiply-strings/discuss/17605/Easiest-JAVA-Solution-with-Graph-Explanation
   // time complexity O(m*n)
   // space complexity O(m+n)
+  // 也是模拟了乘法的计算过程，两个数相乘后找到对应的位置累加进去
+  // 重点是index的计算
   if (num1 === '0' || num2 === '0') return '0';
   const m = num1.length;
   const n = num2.length;

@@ -85,4 +85,7 @@ assert.equal(res2, false)
 于是可以推到出动态转移方程式：
 dp(i,j) = (dp(i-1,j) && s1[i] === s3[i+j]) || (dp(i,j-1) && s2[j] === s3[i+j])
 边界条件 dp(0,0) = true;
+
+https://leetcode.com/problems/interleaving-string/discuss/31885/Python-DP-solutions-(O(m*n)-O(n)-space)-BFS-DFS.
+还可以用BFS，DFS解决
  */

@@ -9,21 +9,47 @@
  * @param {string} s
  * @return {string[][]}
  */
+
+// function partition(s) {
+//   // 回溯+dp预处理
+//   // time complexity O(n*n^2): 最坏情况下，s包含n个相同的字符，
+//   // 因此任意一种划分方式都满足，而长度为n的字符串划分方案数为2^(n-1)=O(2^n)。
+//   // （画出递归树帮助理解）。每个划分方案都需要O(n)的时间求出对应的划分结果并放入答案
+//   // space complexity O(n^2): dp数组的空间为O(n^2)
+//   const n = s.length
+//   const ans = []
+//   const ret = []
+//   const dp = new Array(n).fill(0).map(() => new Array(n).fill(true))
+//   for (let i = n - 1; i >= 0; i -= 1) {
+//     for (let j = i + 1; j < n; j += 1) {
+//       dp[i][j] = s[i] === s[j] && dp[i + 1][j - 1]
+//     }
+//   }
+//   backtrack(0)
+//   return ret
+//   function backtrack(i) {
+//     if (i === n) {
+//       ret.push([...ans])
+//       return
+//     }
+//     for (let j = i; j < n; j += 1) {
+//       if (dp[i][j]) {
+//         ans.push(s.substring(i, j + 1))
+//         backtrack(j + 1)
+//         ans.pop()
+//       }
+//     }
+//   }
+// }
+
 function partition(s) {
-  // 回溯+dp预处理
-  // time complexity O(n*n^2): 最坏情况下，s包含n个相同的字符，
-  // 因此任意一种划分方式都满足，而长度为n的字符串划分方案数为2^(n-1)=O(2^n)。
-  // （画出递归树帮助理解）。每个划分方案都需要O(n)的时间求出对应的划分结果并放入答案
-  // space complexity O(n^2): dp数组的空间为O(n^2)
+  // 回溯 + 缓存
+  // time complexity O(n*n^2)
+  // space complexity O(n^2)
   const n = s.length
   const ans = []
   const ret = []
-  const dp = new Array(n).fill(0).map(() => new Array(n).fill(true))
-  for (let i = n - 1; i >= 0; i -= 1) {
-    for (let j = i + 1; j < n; j += 1) {
-      dp[i][j] = s[i] === s[j] && dp[i + 1][j - 1]
-    }
-  }
+  const cache = new Array(n).fill(0).map(() => new Array(n).fill(0))
   backtrack(0)
   return ret
   function backtrack(i) {
@@ -32,12 +58,26 @@ function partition(s) {
       return
     }
     for (let j = i; j < n; j += 1) {
-      if (dp[i][j]) {
+      if (isPalindrome(i, j) === 1) {
         ans.push(s.substring(i, j + 1))
         backtrack(j + 1)
         ans.pop()
       }
     }
+  }
+  // 0未搜索，1是回文串，-1不是回文串
+  function isPalindrome(i, j) {
+    if (cache[i][j] !== 0) {
+      return cache[i][j]
+    }
+    if (i >= j) {
+      cache[i][j] = 1
+    } else if (s[i] === s[j]) {
+      cache[i][j] = isPalindrome(i + 1, j - 1)
+    } else {
+      cache[i][j] = -1
+    }
+    return cache[i][j]
   }
 }
 // @lc code=end

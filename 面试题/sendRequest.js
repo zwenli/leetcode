@@ -44,16 +44,16 @@ const bus = {
     if (!this.callbacks[event]) {
       return
     }
-    this.callbacks[event].map(cb => cb.apply(this, args))
-  }
+    this.callbacks[event].map((cb) => cb.apply(this, args))
+  },
 }
 async function sendRequest(urls, max, cb = () => {}) {
   let size = 0
   async function send() {
-    if (size >= max) return;
+    if (size >= max) return
     try {
-      size += 1;
-      send();
+      size += 1
+      send()
       await fetch(urls.shift())
     } finally {
       size -= 1
@@ -66,14 +66,12 @@ async function sendRequest(urls, max, cb = () => {}) {
       return
     }
     if (urls.length && size < max) {
-      send();
-      return;
+      send()
+      return
     }
   })
   send()
 }
-
-
 
 function genUrls() {
   const base = 'http://localhost:333/test/'
@@ -83,4 +81,11 @@ function genUrls() {
   }
   return urls
 }
-sendRequest(genUrls(), 10, () => { console.log('send request done') })
+sendRequest(genUrls(), 10, () => {
+  console.log('send request done')
+})
+
+/**
+另一种，promises维护执行中的fetch，然后不断用Promise.race
+将首个执行完成的任务移除并继续下一个
+ */

@@ -72,4 +72,13 @@ assert.deepEqual(res2, ['AAAAAAAAAA'])
 2. rabin-krap
 
 3. 位运算
+
+https://leetcode.com/problems/repeated-dna-sequences/discuss/53867/Clean-Java-solution-(hashmap-%2B-bits-manipulation)
+此解还不是最优，没有用到滑动窗口
+
+A: 00
+C: 01
+G: 10
+T: 11
+
  */

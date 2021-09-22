@@ -11,6 +11,9 @@
  */
 
 function nthUglyNumber(n) {
+  // 动态规划+多指针
+  // time complexity O(n)
+  // space complexity O(n)
   const dp = new Array(n + 1).fill(0)
   dp[1] = 1
   let p2 = 1

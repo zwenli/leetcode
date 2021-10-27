@@ -11,14 +11,25 @@
  */
 function minCostClimbingStairs(cost) {
   const n = cost.length
-  const dp = new Array(n + 1).fill(0)
-  dp[0] = 0
-  dp[1] = 0
+  let first = 0;
+  let second = 0;
   for (let i = 2; i <= n; i += 1) {
-    dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+    const third = Math.min(first + cost[i-2], second + cost[i-1]);
+    first = second;
+    second = third;
   }
-  return dp[n];
+  return second;
 }
+// function minCostClimbingStairs(cost) {
+//   const n = cost.length
+//   const dp = new Array(n + 1).fill(0)
+//   dp[0] = 0
+//   dp[1] = 0
+//   for (let i = 2; i <= n; i += 1) {
+//     dp[i] = Math.min(dp[i - 1] + cost[i - 1], dp[i - 2] + cost[i - 2])
+//   }
+//   return dp[n];
+// }
 // @lc code=end
 
 const assert = require('assert').strict

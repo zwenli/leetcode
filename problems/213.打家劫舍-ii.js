@@ -11,29 +11,44 @@
  */
 
 function rob(nums) {
-  // 动态规划
-  // 时间复杂度O(n): O(n) * 2
-  // 空间复杂度O(1)
-  // 设置4个变量一次循环也可以
-  if (!nums || !nums.length) return 0;
-  if (nums.length === 1) return nums[0];
-  if (nums.length === 2) return Math.max(nums[0], nums[1]);
-  return Math.max(
-    robHelper(0, nums.length - 2),
-    robHelper(1, nums.length - 1),
-  );
-
-  function robHelper(start, end) {
-    let first = 0;
-    let second = 0;
-    for (let i = start; i <= end; i += 1) {
-      const tmp = Math.max(first + nums[i], second);
-      first = second;
-      second = tmp;
-    }
-    return second;
-  }
+  // dp 空间优化
+  const n = nums.length;
+  if (n < 2) return nums[0];
+  let prev1 = 0;
+  let cur1 = 0;
+  let prev2 = 0;
+  let cur2 = 0;
+  for (let i = 0; i < n - 1; i += 1) {
+    [cur1, prev1] = [Math.max(cur1, prev1 + nums[i]), cur1];
+    [cur2, prev2] = [Math.max(cur2, prev2 + nums[i + 1]), cur2];
+  } 
+  return Math.max(cur1, cur2);
 }
+
+// function rob(nums) {
+//   // 动态规划
+//   // 时间复杂度O(n): O(n) * 2
+//   // 空间复杂度O(1)
+//   // 设置4个变量一次循环也可以
+//   if (!nums || !nums.length) return 0;
+//   if (nums.length === 1) return nums[0];
+//   if (nums.length === 2) return Math.max(nums[0], nums[1]);
+//   return Math.max(
+//     robHelper(0, nums.length - 2),
+//     robHelper(1, nums.length - 1),
+//   );
+
+//   function robHelper(start, end) {
+//     let first = 0;
+//     let second = 0;
+//     for (let i = start; i <= end; i += 1) {
+//       const tmp = Math.max(first + nums[i], second);
+//       first = second;
+//       second = tmp;
+//     }
+//     return second;
+//   }
+// }
 // @lc code=end
 
 const res1 = rob([2, 3, 1]); // 3

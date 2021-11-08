@@ -23,10 +23,11 @@ function threeSum(nums) {
 
 /**
  * 求解n数之和
- * @param {*} nums 数组
- * @param {*} n
- * @param {*} start 起始坐标
- * @param {*} target 求解的和
+ * @param {number[]} nums 数组
+ * @param {number} n n的数量
+ * @param {number} start 起始坐标
+ * @param {number} target 求解的和
+ * @return {number[][]}
  */
 function nSumTarget(nums, n, start, target) {
   // 此方法默认nums是有序的

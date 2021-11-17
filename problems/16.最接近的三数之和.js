@@ -11,6 +11,10 @@
  * @return {number}
  */
 function threeSumClosest(nums, target) {
+  // 排序+双指针
+  // time complexity O(n^2): 排序的时间复杂度为O(nlogn)，一层循环O(n)枚举i，双指针O(n)枚举L和R
+  // 一共是O(n^2)
+  // space complexity O(logn): 排序需要O(logn)的空间
   const n = nums.length
   let best = Infinity // 最接近的总和
   nums.sort((a, b) => a - b)

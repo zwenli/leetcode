@@ -13,31 +13,46 @@
  * @return {number[][]}
  */
 function generate(numRows) {
-  // 递归 + 备忘录
-  // 递推关系 f(i,j) = f(i-1, j-1) + f(i - 1, j)
-  const triangle = [];
+  // dp
+  const ret = []
 
   for (let i = 0; i < numRows; i += 1) {
-    const row = [];
-    for (let j = 0; j <= i; j += 1) {
-      row.push(helper(i, j));
+    const row = new Array(i + 1).fill(1)
+    for (let j = 1; j < i; j += 1) {
+      row[j] = ret[i - 1][j - 1] + ret[i - 1][j]
     }
-    triangle.push(row);
+    ret.push(row)
   }
-  return triangle;
-
-  function helper(i, j) {
-    // base case
-    if (j === 0 || j === i) {
-      return 1;
-    }
-    if (!triangle[i] || !triangle[i][j]) {
-      return helper(i - 1, j - 1) + helper(i - 1, j);
-    }
-    return triangle[i][j];
-  }
+  return ret
 }
+
+// function generate(numRows) {
+//   // 递归 + 备忘录
+//   // 递推关系 f(i,j) = f(i-1, j-1) + f(i - 1, j)
+//   const triangle = [];
+
+//   for (let i = 0; i < numRows; i += 1) {
+//     const row = [];
+//     for (let j = 0; j <= i; j += 1) {
+//       row.push(helper(i, j));
+//     }
+//     triangle.push(row);
+//   }
+//   return triangle;
+
+//   function helper(i, j) {
+//     // base case
+//     if (j === 0 || j === i) {
+//       return 1;
+//     }
+//     if (!triangle[i] || !triangle[i][j]) {
+//       return helper(i - 1, j - 1) + helper(i - 1, j);
+//     }
+//     return triangle[i][j];
+//   }
+// }
 // @lc code=end
+
 // function generate(numRows) {
 //   const triangle = [];
 //   // base case 0
@@ -81,7 +96,9 @@ function generate(numRows) {
 //   return ans;
 // }
 
-const res1 = generate(5);
+const assert = require('assert').strict;
+const res1 = generate(5)
+assert.deepEqual(res1, [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]])
 // [
 //      [1],
 //     [1,1],

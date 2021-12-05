@@ -19,26 +19,26 @@ function maximalSquare(matrix) {
   // 由左方、上方、左上方三个相邻的dp决定的。木桶的短板理论。
   // time complexity O(mn)
   // space complexity O(n)
-  const m = matrix.length;
-  const n = matrix[0].length;
-  const dp = new Array(n + 1).fill(0);
-  let leftUp = 0; // 左上角
-  let maxSide = 0;
+  const m = matrix.length
+  const n = matrix[0].length
+  const dp = new Array(n + 1).fill(0)
+  let leftUp = 0 // 左上角
+  let maxSide = 0
   for (let i = 1; i <= m; i += 1) {
     // 遍历每行时重置左上角的值为0，
-    leftUp = 0;
+    leftUp = 0
     for (let j = 1; j <= n; j += 1) {
-      const nextLeftUp = dp[j];
+      const nextLeftUp = dp[j]
       if (matrix[i - 1][j - 1] === '1') {
-        dp[j] = 1 + Math.min(dp[j], dp[j - 1], leftUp);
-        maxSide = Math.max(dp[j], maxSide);
+        dp[j] = 1 + Math.min(dp[j], dp[j - 1], leftUp)
+        maxSide = Math.max(dp[j], maxSide)
       } else {
-        dp[j] = 0;
+        dp[j] = 0
       }
-      leftUp = nextLeftUp;
+      leftUp = nextLeftUp
     }
   }
-  return maxSide * maxSide;
+  return maxSide * maxSide
 }
 
 // function maximalSquare(matrix) {
@@ -66,16 +66,33 @@ function maximalSquare(matrix) {
 // }
 // @lc code=end
 
+const assert = require('assert').strict
+
 const res1 = maximalSquare([
   ['1', '0', '1', '0', '0'],
   ['1', '0', '1', '1', '1'],
   ['1', '1', '1', '1', '1'],
   ['1', '0', '0', '1', '0'],
-]);
-// 4
+])
+assert.equal(res1, 4)
 
-const res2 = maximalSquare([['0', '1'], ['1', '0']]);
-// 1
+const res2 = maximalSquare([
+  ['0', '1'],
+  ['1', '0'],
+])
+assert.equal(res2, 1)
 
-const res3 = maximalSquare([[['0']]]);
-// 0
+const res3 = maximalSquare([[['0']]])
+assert.equal(res2, 0)
+
+/**
+相似题目
+1277.统计全为1的正方形矩阵
+
+通过dp，找出边长最大的正方形即可
+dp[i][j] 表示以(i,j)为右下角，且只包含1的正方形的边长最长值。
+当m[i][j] === 1时， dp[i][j] = 1 + min(dp[i-1][j-1], dp[i-1][j], dp[i][j-1])
+否则 dp[i][j] = 0;
+注意边界情况，
+为了方便处理边界情况，dp空间设置为(m + 1)*(n + 1)，初始化为0，这样就无需特殊处理边界情况
+ */

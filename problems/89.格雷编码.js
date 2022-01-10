@@ -10,6 +10,9 @@
  * @return {number[]}
  */
 function grayCode(n) {
+  // 对称生成
+  // time complexity O(2^n)
+  // space complexity O(1)
   const ret = [0] // base case
   for (let i = 1; i <= n; i += 1) {
     const m = ret.length

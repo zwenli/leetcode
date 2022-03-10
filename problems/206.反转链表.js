@@ -54,15 +54,23 @@ function reverseList(head) {
   // 每次都让head的下一个节点的next指针指向cur，实现一次局部反转
   // 局部反转之后，cur和head的next指针都前移动一个位置
   // cur指向head的下个节点，head的next指针指向下下个节点
-  if (!head) return head;
-  let cur = head;
-  while (head.next) {
-    const temp = head.next.next;
-    head.next.next = cur;
-    cur = head.next;
-    head.next = temp;
+  // if (!head) return head;
+  // let cur = head;
+  // while (head.next) {
+  //   const temp = head.next.next;
+  //   head.next.next = cur;
+  //   cur = head.next;
+  //   head.next = temp;
+  // }
+  // return cur;
+  let prev = null;
+  while (head) {
+    const next = head.next;
+    head.next = prev;
+    prev = head;
+    head = next;
   }
-  return cur;
+  return prev;
 }
 
 // @lc code=end

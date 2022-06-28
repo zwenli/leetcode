@@ -9,22 +9,40 @@
  * @param {number} n
  * @return {number}
  */
-
 function integerReplacement(n) {
-  // 记忆化搜索
-  const memo = Object.create(null)
-  const recursive = (n) => {
-    if (n === 1) return 0
-    if (memo[n]) return memo[n]
+  if (n === 2 ** 32 - 1) return 32
+  let count = 0
+  while (n > 1) {
     if (n % 2 === 0) {
-      memo[n] = 1 + recursive(n / 2)
+      n /= 2
     } else {
-      memo[n] = 2 + Math.min(recursive((n + 1) / 2), recursive((n - 1) / 2))
+      // n + 1 能被4整除，选择 + 1是更优解，
+      // 除了n = 3，需要选择 -1
+      if ((n + 1) % 4 === 0 && n - 1 != 2) {
+        n++
+      } else {
+        n--
+      }
     }
-    return memo[n]
+    count += 1
   }
-  return recursive(n)
+  return count
 }
+// function integerReplacement(n) {
+//   // 记忆化搜索
+//   const memo = Object.create(null)
+//   const recursive = (n) => {
+//     if (n === 1) return 0
+//     if (memo[n]) return memo[n]
+//     if (n % 2 === 0) {
+//       memo[n] = 1 + recursive(n / 2)
+//     } else {
+//       memo[n] = 2 + Math.min(recursive((n + 1) / 2), recursive((n - 1) / 2))
+//     }
+//     return memo[n]
+//   }
+//   return recursive(n)
+// }
 // function integerReplacement(n) {
 //   // 栈溢出
 //   const dp = new Array(n + 1).fill(0)
@@ -38,6 +56,14 @@ function integerReplacement(n) {
 //   return dp[n]
 // }
 // @lc code=end
+const assert = require('assert').strict
+
+const res1 = integerReplacement(8)
+assert.equal(res1, 3)
+
+const res2 = integerReplacement(7)
+assert.equal(res2, 4)
+
 /**
 base case
 n = 1, 1,  0次

@@ -12,6 +12,8 @@
  */
 var isRectangleOverlap = function (rec1, rec2) {
   // 区域重叠判断
+  // 右端最小值大于左端最大值，说明两个线段间存在重叠
+  // x轴和y轴的线段都重叠，即区域重叠了
   const { max, min } = Math
   return (
     min(rec1[2], rec2[2]) > max(rec1[0], rec2[0]) &&

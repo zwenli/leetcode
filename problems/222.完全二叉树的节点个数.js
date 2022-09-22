@@ -18,7 +18,7 @@
  * @return {number}
  */
 const exits = (root, level, k) => {
-  // 判断节点是否存在
+  // 判断节点是否存在，level位为父节点，必为1，直接从level-1位开始
   let bits = 1 << (level - 1)
   let node = root
   while (node !== null && bits) {
@@ -41,6 +41,7 @@ var countNodes = function (root) {
   let low = 1 << level
   let high = (1 << (level + 1)) - 1
   while (low < high) {
+    // 加1，防止low 一直小于 high，出现死循环
     const mid = ((high - low + 1) >> 1) + low
     if (exits(root, level, mid)) {
       low = mid

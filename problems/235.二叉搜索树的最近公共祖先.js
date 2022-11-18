@@ -4,8 +4,6 @@
  * [235] 二叉搜索树的最近公共祖先
  */
 
-const { validateLocaleAndSetLanguage } = require("typescript")
-
 // @lc code=start
 /**
  * Definition for a binary tree node.

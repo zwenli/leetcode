@@ -12,11 +12,13 @@ class MinPQ {
     this.pq = [null]; // 位置0为哨兵
   }
 
-  max() {
+  // peek
+  min() {
     return this.pq[1];
   }
 
-  delMax() {
+  // poll
+  delMin() {
     const min = this.pq[1];
     this.exch(1, this.N);
     this.pq[this.N] = null;
@@ -25,6 +27,7 @@ class MinPQ {
     return min;
   }
 
+  // offer
   insert(e) {
     this.N += 1;
     this.pq[this.N] = e;
@@ -36,7 +39,7 @@ class MinPQ {
   }
 
   /** 辅助函数 */
-  /** 上浮第 k 个元素，以维护最大堆性质 */
+  /** 上浮第 k 个元素，以维护最小堆性质 */
   swim(k) {
     while (k > 1 && this.greater(this.parent(k), k)) {
       // 如果第k个元素比父元素小，交换
@@ -45,7 +48,7 @@ class MinPQ {
     }
   }
 
-  /** 下沉第 k 个元素，以维护最大堆性质 */
+  /** 下沉第 k 个元素，以维护最小堆性质 */
   sink(k) {
     while (this.left(k) <= this.N) {
       let j = this.left(k);
@@ -89,8 +92,8 @@ minpq.insert(3); //
 minpq.insert(6); //
 minpq.insert(1); //
 minpq.insert(8); //
-console.log(minpq.max()); // 1
-minpq.delMax(); // 1
-console.log(minpq.max()); // 3
+console.log(minpq.min()); // 1
+minpq.delMin(); // 1
+console.log(minpq.min()); // 3
 minpq.insert(2);
-console.log(minpq.max()); // 2
+console.log(minpq.min()); // 2

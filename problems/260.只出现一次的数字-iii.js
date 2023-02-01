@@ -11,7 +11,7 @@
  */
 var singleNumber = function (nums) {
   // hash
-  let xorsum = 0 // = x1 ^ x2
+  let xorsum = 0 // x = x1 ^ x2，因为x1，x2不相等，所有结果x != 0
   for (const num of nums) {
     xorsum ^= num
   }

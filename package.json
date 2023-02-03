@@ -4,11 +4,11 @@
   "description": "算法练习",
   "main": "index.js",
   "scripts": {
-    "eslint": "eslint ./ --ext .ts"
+    "eslint": "eslint ./ --ext .ts",
+    "commit": "git cz"
   },
   "husky": {
-    "hooks": {
-    }
+    "hooks": {}
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +19,7 @@
     "eslint-config-airbnb-base": "^14.2.0",
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.3.1",
+    "git-cz": "^4.9.0",
     "husky": "^4.2.5",
     "prettier": "^2.2.1",
     "typescript": "^3.9.3"

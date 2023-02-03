@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "eslint": "eslint ./ --ext .ts",
-    "commit": "git cz"
+    "commit": "git-cz"
   },
   "husky": {
     "hooks": {}

@@ -11,6 +11,11 @@
  */
 
 function findComplement(num) {
+  // num xor num的掩码 = num的补码
+  // 二进制最高位的1的数值，也就是一个掩码（mask）
+  // 利用二进制最高位的1，运算符"|="作用于原数和它右移的数值，
+  // 来保证掩码的最高位为1，其它位为0。
+  // 利用了分治思想。
   let mask = num;
   mask |= mask >>> 1;
   mask |= mask >>> 2;

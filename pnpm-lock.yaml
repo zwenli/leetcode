@@ -3,6 +3,7 @@ lockfileVersion: 5.4
 specifiers:
   '@typescript-eslint/eslint-plugin': ^3.10.1
   '@typescript-eslint/parser': ^3.10.1
+  datastructures-js: ^12.0.0
   eslint: ^7.7.0
   eslint-config-airbnb-base: ^14.2.0
   eslint-plugin-import: ^2.22.0
@@ -15,6 +16,7 @@ specifiers:
 devDependencies:
   '@typescript-eslint/eslint-plugin': 3.10.1_kxujzhw6vbtdri44htsqryf25e
   '@typescript-eslint/parser': 3.10.1_2de3j2mqba4wgeuiaqz2k7syrm
+  datastructures-js: 12.0.0
   eslint: 7.32.0
   eslint-config-airbnb-base: 14.2.1_4heylg5ce4zxl5r7mnxe6vqlki
   eslint-plugin-import: 2.27.5_6vpcbutzmq5vtliwzwjgeopqvm
@@ -51,6 +53,54 @@ packages:
       '@babel/helper-validator-identifier': 7.19.1
       chalk: 2.4.2
       js-tokens: 4.0.0
+    dev: true
+
+  /@datastructures-js/binary-search-tree/5.3.1:
+    resolution: {integrity: sha512-FgNcahe8U9yaofirAzXUs+gLhR+z6sQgAKnIjdGyBLLemFhrsqyJIHyWxnGWtekELbH9XAUJ8/WezNYNDtPetA==}
+    dev: true
+
+  /@datastructures-js/deque/1.0.4:
+    resolution: {integrity: sha512-zlgVSsxqiAd+scLUILvx8E887o+6kYds9/d4DCM/mFOuUITUlPG/r3u5iPZjzW3o6XPPi+p66p3Kf1+wFxYvLQ==}
+    dev: true
+
+  /@datastructures-js/graph/5.3.0:
+    resolution: {integrity: sha512-Owbn40ha2W22i6yGSTmOb7ppL6RZKCeFf9tVKqFVXClb5rWQgscHDIyuHXFcNkdlsrq3O0E7zvJ45O60/8m/mg==}
+    dependencies:
+      '@datastructures-js/queue': 3.1.4
+    dev: true
+
+  /@datastructures-js/heap/4.3.1:
+    resolution: {integrity: sha512-au4fYa4fprREES58FnMOTFjg8lCYpSenF5tBu8C/iweMaj02rAOZUqlLUCqR3HIWzNfgTeCmAiyRHdjJVHrsIQ==}
+    dev: true
+
+  /@datastructures-js/linked-list/5.2.5:
+    resolution: {integrity: sha512-YhlkDh7yMOaJ2bGgmrwvyF3vCrMELo2ERTiRxFMMkQF6+5n6expCBoseHtMIwe8fHJu1bzT7IaEHRU58hBoMUQ==}
+    dev: true
+
+  /@datastructures-js/priority-queue/6.2.0:
+    resolution: {integrity: sha512-z4Nikrb3PqlYn1+2bF+LArm2kWC5kvm13E1h+HYm0exGuUEp2Av0S31tDG+h8hVIbg+FlJIzWiF/T38XIexs5w==}
+    dependencies:
+      '@datastructures-js/heap': 4.3.1
+    dev: true
+
+  /@datastructures-js/queue/3.1.4:
+    resolution: {integrity: sha512-8QqkdAJQDDd25OBX28lKj7HXD+Cxs6Ee0ogJkZUjD5R1fAvRAWsrCeKop0szqANYjMwdQQd75vyc3Cm8qNJH+Q==}
+    dev: true
+
+  /@datastructures-js/queue/4.2.3:
+    resolution: {integrity: sha512-GWVMorC/xi2V2ta+Z/CPgPGHL2ZJozcj48g7y2nIX5GIGZGRrbShSHgvMViJwHJurUzJYOdIdRZnWDRrROFwJA==}
+    dev: true
+
+  /@datastructures-js/set/4.2.1:
+    resolution: {integrity: sha512-qGJhgclFpV7JTPDEJ/ftrFmIf8s6t5Y9nhc5KffuPt0UjCVc1infAltX7R/XFEBF+f7RAqYl/NIZaOekvU88zg==}
+    dev: true
+
+  /@datastructures-js/stack/3.1.4:
+    resolution: {integrity: sha512-+2+SOvKcNizQaR31AL1Sox4p5rvAlZfvXO9gi6qWrXMvLqb3S5/3t0ZRAefA0ZabQz0LCXOc8aTeHSWSOMrNCQ==}
+    dev: true
+
+  /@datastructures-js/trie/4.2.2:
+    resolution: {integrity: sha512-wZFXic9OLc+BgtnUYr0EIaAZLaPaNt0r1zjf2xJ5JhGwuK0w2vwlOMMj9RHgIeOY+UM0J76CcrmN/wn2LlEYkA==}
     dev: true
 
   /@eslint/eslintrc/0.4.3:
@@ -395,6 +445,21 @@ packages:
       path-key: 3.1.1
       shebang-command: 2.0.0
       which: 2.0.2
+    dev: true
+
+  /datastructures-js/12.0.0:
+    resolution: {integrity: sha512-IxgPUTpIxoABph09Io2UYpVWoPWogSt0zjdHotWF4Nt8pBTYcWLmk14JOks5TngQHSQb3aiBs4V9Imvv3nYbIg==}
+    dependencies:
+      '@datastructures-js/binary-search-tree': 5.3.1
+      '@datastructures-js/deque': 1.0.4
+      '@datastructures-js/graph': 5.3.0
+      '@datastructures-js/heap': 4.3.1
+      '@datastructures-js/linked-list': 5.2.5
+      '@datastructures-js/priority-queue': 6.2.0
+      '@datastructures-js/queue': 4.2.3
+      '@datastructures-js/set': 4.2.1
+      '@datastructures-js/stack': 3.1.4
+      '@datastructures-js/trie': 4.2.2
     dev: true
 
   /debug/3.2.7:

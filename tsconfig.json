@@ -6,7 +6,8 @@
     "outDir": "out",
     "noImplicitAny": true,
     "moduleResolution": "node",
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators": true,
   },
   "include": [
     "**/*.ts"

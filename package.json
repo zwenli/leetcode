@@ -5,11 +5,16 @@
   "main": "index.js",
   "scripts": {
     "eslint": "eslint ./ --ext .ts",
-    "commit": "git-cz",
-    "ts": "tsx"
+    "ts": "tsx",
+    "cz": "git-cz"
   },
   "husky": {
     "hooks": {}
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/git-cz"
+    }
   },
   "author": "",
   "license": "ISC",

@@ -10,6 +10,10 @@
  * @return {number}
  */
 var minOperations = function (nums) {
+  /**
+   * 在遍历数组时，对于每个元素，如果它小雨等于前一个元素，需要将其变为前一个元素加1。
+   * 并记录下总共的操作次数即可。
+   */
   let max = nums[0]
   let ans = 0
   for (let i = 1; i < nums.length; i++) {

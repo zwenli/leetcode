@@ -10,6 +10,7 @@
  * @return {string}
  */
 var largestTimeFromDigits = function (arr) {
+  // TODO: 优化，从大到小排序，第一个遇到的合法值就是所求答案
   arr.sort((a, b) => a - b)
   const visited = new Array(4).fill(false)
   let ans = null

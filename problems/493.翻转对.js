@@ -14,32 +14,86 @@
  */
 
 function reversePairs(nums) {
-  // 归并排序
-  if (!nums || nums.length < 2) return 0;
-  return mergeSort(nums, 0, nums.length - 1);
+  // 离散化树状数组
+  // time complexity O(nlogn): n为数组的长度，排序的时间复杂度为O(nlogn)，树状数组操作的时间复杂度为O(logn)
+  // space complexity O(n): 树状数组需要O(n)的空间
+  const allNumbers = Array.from(
+    new Set([...nums, ...nums.map((x) => x * 2)].sort((a, b) => a - b))
+  )
+  // 离散化
+  // 数组中整数范围可能很大，且不连续。
+  // 利用哈希表将所有可能出现的整数，映射到连续的整数区间内
+  const values = new Map()
+  let idx = 0
+  allNumbers.forEach((num) => values.set(num, ++idx))
+
+  let ans = 0
+  const bit = new BIT(values.size)
+  for (const num of nums) {
+    // 对于 nums[i] 而言，要找到i为右端点的翻转对数量，
+    // 即要找到[2*nums[i]+1, maxValue]（maxValue为数组中最大元素的二倍）区间的整数数量，这个数值等于
+    // = [1, maxValue]区间的数量 - [1, 2*nums[i]]区间的数量
+    const left = values.get(num * 2) + 1
+    const right = values.size
+    ans += bit.range(left, right)
+    bit.add(values.get(num), 1)
+  }
+  return ans
+}
+class BIT {
+  constructor(size) {
+    this.size = size
+    this.tree = new Array(size + 1).fill(0)
+  }
+  lowbit(x) {
+    return x & -x
+  }
+  add(i, v) {
+    while (i <= this.size) {
+      this.tree[i] += v
+      i += this.lowbit(i)
+    }
+  }
+  query(i) {
+    let sum = 0
+    while (i > 0) {
+      sum += this.tree[i]
+      i -= this.lowbit(i)
+    }
+    return sum
+  }
+  range(l, r) {
+    return this.query(r) - this.query(l - 1)
+  }
 }
 
-function mergeSort(nums, left, right) {
-  if (left >= right) return 0;
-  const mid = left + ((right - left) >> 1);
-  let count = mergeSort(nums, left, mid)
-   + mergeSort(nums, mid + 1, right);
-  const cache = new Array(right - left + 1);
-  let i = left; // 翻转对下标
-  let c = 0; // cache下标
-  let k = left; // 左区间下标
-  for (let j = mid + 1; j <= right; j++, c++) {
-    while (i <= mid && nums[i] <= 2 * nums[j]) i++;
-    while (k <= mid && nums[k] < nums[j]) cache[c++] = nums[k++];
-    count += mid - i + 1;
-    cache[c] = nums[j];
-  }
-  while (k <= mid) cache[c++] = nums[k++];
-  for (let p = 0; p < cache.length; p++) {
-    nums[left + p] = cache[p];
-  }
-  return count;
-}
+// function reversePairs(nums) {
+//   // 归并排序
+//   if (!nums || nums.length < 2) return 0;
+//   return mergeSort(nums, 0, nums.length - 1);
+// }
+
+// function mergeSort(nums, left, right) {
+//   if (left >= right) return 0;
+//   const mid = left + ((right - left) >> 1);
+//   let count = mergeSort(nums, left, mid)
+//    + mergeSort(nums, mid + 1, right);
+//   const cache = new Array(right - left + 1);
+//   let i = left; // 翻转对下标
+//   let c = 0; // cache下标
+//   let k = left; // 左区间下标
+//   for (let j = mid + 1; j <= right; j++, c++) {
+//     while (i <= mid && nums[i] <= 2 * nums[j]) i++;
+//     while (k <= mid && nums[k] < nums[j]) cache[c++] = nums[k++];
+//     count += mid - i + 1;
+//     cache[c] = nums[j];
+//   }
+//   while (k <= mid) cache[c++] = nums[k++];
+//   for (let p = 0; p < cache.length; p++) {
+//     nums[left + p] = cache[p];
+//   }
+//   return count;
+// }
 
 // function reversePairs(nums) {
 //   // 归并排序
@@ -98,10 +152,14 @@ function mergeSort(nums, left, right) {
 // }
 // @lc code=end
 
-const res1 = reversePairs([1, 3, 2, 3, 1]);
-// 2
-const res2 = reversePairs([2, 4, 3, 5, 1]);
-// 3
+const assert = require('node:assert').strict
+
+const res1 = reversePairs([1, 3, 2, 3, 1])
+assert.equal(res1, 2)
+const res2 = reversePairs([2, 4, 3, 5, 1])
+assert.equal(res2, 3)
+const res3 = reversePairs([-5, -5])
+assert.equal(res3, 1)
 
 /**
 

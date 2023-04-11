@@ -16,47 +16,112 @@
  */
 
 function countRangeSum(nums, lower, upper) {
-  // 归并排序
-  if (!nums || !nums.length) return 0;
-  // 构建前缀和数组
-  const sums = new Array(nums.length + 1).fill(0);
-  for (let i = 0; i < nums.length; i += 1) {
-    sums[i + 1] = nums[i] + sums[i];
+  // 树状数组
+  // https://leetcode.cn/problems/count-of-range-sum/solution/by-ac_oier-b36o/
+
+  // 由于区间和的定义是子数组的元素和，容易想到「前缀和」来快速求解。
+  // 对于每个nums[i]，需要统计每个以nums[i]为右端点的合法子数组个数（合法
+  // 子数组是指区间和值范围为 [lower,upper] 的子数组）。
+  // 可以从左往右处理nums，假设处理到位置k，同时下表[0,k]的前缀和为s，那么以
+  // nums[k]为右端点的合法子数组个数，等价于在下标[0,k-1]中前缀和范围在
+  // [s-upper, s-lower]的数的个数。
+
+  let allNumbers = []
+  let s = 0
+  allNumbers.push(s)
+  for (const num of nums) {
+    s += num
+    allNumbers.push(s)
+    allNumbers.push(s - lower)
+    allNumbers.push(s - upper)
   }
-  return mergeSort(sums, 0, sums.length - 1, lower, upper);
-  function mergeSort(sums, left, right) {
-    if (left === right) return 0;
-    const mid = (left + right) >> 1;
-    let count = mergeSort(sums, left, mid, lower, upper)
-      + mergeSort(sums, mid + 1, right, lower, upper);
-    // TODO: 下面两部可以合并成一次循环完成
-    // https://leetcode.com/problems/count-of-range-sum/discuss/77990/Share-my-solution
-    // 统计下标对
-    for (let i = left, l = mid + 1, r = mid + 1; i <= mid; i += 1) {
-      while (l <= right && sums[l] < sums[i] + lower) l += 1;
-      while (r <= right && sums[r] <= sums[i] + upper) r += 1;
-      count += r - l;
+  allNumbers = Array.from(new Set(allNumbers.sort((a, b) => a - b)))
+  const values = new Map()
+  let idx = 0
+  allNumbers.forEach((num) => values.set(num, ++idx))
+
+  s = 0
+  let ans = 0
+  const bit = new BIT(values.size)
+  bit.add(values.get(s), 1)
+  for (const num of nums) {
+    s += num
+    const left = values.get(s - upper)
+    const right = values.get(s - lower)
+    ans += bit.range(left, right)
+    bit.add(values.get(s), 1)
+  }
+  return ans
+}
+class BIT {
+  constructor(size) {
+    this.size = size
+    this.tree = new Array(size + 1).fill(0)
+  }
+  lowbit(x) {
+    return x & -x
+  }
+  add(i, v) {
+    while (i <= this.size) {
+      this.tree[i] += v
+      i += this.lowbit(i)
     }
-    const cache = new Array(right - left + 1);
-    let c = 0;
-    let i = left;
-    let j = mid + 1;
-    // 合并两个有序数组
-    while (i <= mid || j <= right) {
-      if (i > mid) {
-        cache[c++] = sums[j++];
-      } else if (j > right) {
-        cache[c++] = sums[i++];
-      } else {
-        cache[c++] = sums[i] < sums[j] ? sums[i++] : sums[j++];
-      }
+  }
+  query(i) {
+    let sum = 0
+    while (i > 0) {
+      sum += this.tree[i]
+      i -= this.lowbit(i)
     }
-    for (let p = 0; p < cache.length; p += 1) {
-      sums[left + p] = cache[p];
-    }
-    return count;
+    return sum
+  }
+  range(l, r) {
+    return this.query(r) - this.query(l - 1)
   }
 }
+
+// function countRangeSum(nums, lower, upper) {
+//   // 归并排序
+//   if (!nums || !nums.length) return 0;
+//   // 构建前缀和数组
+//   const sums = new Array(nums.length + 1).fill(0);
+//   for (let i = 0; i < nums.length; i += 1) {
+//     sums[i + 1] = nums[i] + sums[i];
+//   }
+//   return mergeSort(sums, 0, sums.length - 1, lower, upper);
+//   function mergeSort(sums, left, right) {
+//     if (left === right) return 0;
+//     const mid = (left + right) >> 1;
+//     let count = mergeSort(sums, left, mid, lower, upper)
+//       + mergeSort(sums, mid + 1, right, lower, upper);
+//     // TODO: 下面两部可以合并成一次循环完成
+//     // https://leetcode.com/problems/count-of-range-sum/discuss/77990/Share-my-solution
+//     // 统计下标对
+//     for (let i = left, l = mid + 1, r = mid + 1; i <= mid; i += 1) {
+//       while (l <= right && sums[l] < sums[i] + lower) l += 1;
+//       while (r <= right && sums[r] <= sums[i] + upper) r += 1;
+//       count += r - l;
+//     }
+//     const cache = new Array(right - left + 1);
+//     let c = 0;
+//     let i = left;
+//     let j = mid + 1;
+//     // 合并两个有序数组
+//     while (i <= mid || j <= right) {
+//       if (i > mid) {
+//         cache[c++] = sums[j++];
+//       } else if (j > right) {
+//         cache[c++] = sums[i++];
+//       } else {
+//         cache[c++] = sums[i] < sums[j] ? sums[i++] : sums[j++];
+//       }
+//     }
+//     for (let p = 0; p < cache.length; p += 1) {
+//       sums[left + p] = cache[p];
+//     }
+//     return count;
+//   }
+// }
 // function countRangeSum(nums, lower, upper) {
 //   // 暴力解法，会超时
 //   // time complexity O(n^2): 两层循环
@@ -75,12 +140,16 @@ function countRangeSum(nums, lower, upper) {
 // }
 // @lc code=end
 
-const res1 = countRangeSum([-2, 5, -1], -2, 2);
-// 3
-const res2 = countRangeSum([0], 0, 0);
-// 1
-const res3 = countRangeSum([0, -3, -3, 1, 1, 2], 3, 5);
-// 2
+const assert = require('node:assert').strict
+
+const res1 = countRangeSum([-2, 5, -1], -2, 2)
+assert.equal(res1, 3)
+
+const res2 = countRangeSum([0], 0, 0)
+assert.equal(res2, 1)
+
+const res3 = countRangeSum([0, -3, -3, 1, 1, 2], 3, 5)
+assert.equal(res3, 2)
 
 /**
 

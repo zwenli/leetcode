@@ -1,5 +1,6 @@
 /**
  * 线段树
+ * TODO: 用树结构实现
  */
 class SegmentTree {
   /**
@@ -82,6 +83,23 @@ class SegmentTree {
         this._query(this.rightChild(node), mid + 1, end, mid + 1, right)
       )
     }
+  }
+
+  _query(node, start, end, left, right) {
+    // 无交集
+    if (start > right || end < left) {
+      return 0
+    }
+    // [start, end] 属于 [left, right] 的子区间
+    if (start >= left && end <= right) {
+      return this.tree[node]
+    }
+    // 存在交集的情况
+    const mid = start + ((end - start) >> 1)
+    return (
+      this.query(this.leftChild(node), start, mid, left, mid) +
+      this.query(this.rightChild(node), mid + 1, right, mid + 1, end)
+    )
   }
 
   leftChild(node) {

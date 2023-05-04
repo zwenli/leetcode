@@ -13,57 +13,108 @@
  * @return {number}
  */
 
+// function reversePairs(nums) {
+//   // 离散化树状数组
+//   // time complexity O(nlogn): n为数组的长度，排序的时间复杂度为O(nlogn)，树状数组操作的时间复杂度为O(logn)
+//   // space complexity O(n): 树状数组需要O(n)的空间
+//   const allNumbers = Array.from(
+//     new Set([...nums, ...nums.map((x) => x * 2)].sort((a, b) => a - b))
+//   )
+//   // 离散化
+//   // 数组中整数范围可能很大，且不连续。
+//   // 利用哈希表将所有可能出现的整数，映射到连续的整数区间内
+//   const values = new Map()
+//   let idx = 0
+//   allNumbers.forEach((num) => values.set(num, ++idx))
+
+//   let ans = 0
+//   const bit = new BIT(values.size)
+//   for (const num of nums) {
+//     // 对于 nums[i] 而言，要找到i为右端点的翻转对数量，
+//     // 即要找到[2*nums[i]+1, maxValue]（maxValue为数组中最大元素的二倍）区间的整数数量，这个数值等于
+//     // = [1, maxValue]区间的数量 - [1, 2*nums[i]]区间的数量
+//     const left = values.get(num * 2) + 1
+//     const right = values.size
+//     ans += bit.range(left, right)
+//     bit.add(values.get(num), 1)
+//   }
+//   return ans
+// }
+// class BIT {
+//   constructor(size) {
+//     this.size = size
+//     this.tree = new Array(size + 1).fill(0)
+//   }
+//   lowbit(x) {
+//     return x & -x
+//   }
+//   add(i, v) {
+//     while (i <= this.size) {
+//       this.tree[i] += v
+//       i += this.lowbit(i)
+//     }
+//   }
+//   query(i) {
+//     let sum = 0
+//     while (i > 0) {
+//       sum += this.tree[i]
+//       i -= this.lowbit(i)
+//     }
+//     return sum
+//   }
+//   range(l, r) {
+//     return this.query(r) - this.query(l - 1)
+//   }
+// }
+
 function reversePairs(nums) {
-  // 离散化树状数组
-  // time complexity O(nlogn): n为数组的长度，排序的时间复杂度为O(nlogn)，树状数组操作的时间复杂度为O(logn)
-  // space complexity O(n): 树状数组需要O(n)的空间
   const allNumbers = Array.from(
-    new Set([...nums, ...nums.map((x) => x * 2)].sort((a, b) => a - b))
+    new Set([...nums, ...nums.map((num) => num * 2)].sort((a, b) => a - b))
   )
-  // 离散化
-  // 数组中整数范围可能很大，且不连续。
-  // 利用哈希表将所有可能出现的整数，映射到连续的整数区间内
+
   const values = new Map()
   let idx = 0
-  allNumbers.forEach((num) => values.set(num, ++idx))
+  allNumbers.forEach((num) => values.set(num, idx++))
 
   let ans = 0
-  const bit = new BIT(values.size)
+  const st = new ST(values.size)
   for (const num of nums) {
-    // 对于 nums[i] 而言，要找到i为右端点的翻转对数量，
-    // 即要找到[2*nums[i]+1, maxValue]（maxValue为数组中最大元素的二倍）区间的整数数量，这个数值等于
-    // = [1, maxValue]区间的数量 - [1, 2*nums[i]]区间的数量
-    const left = values.get(num * 2) + 1
-    const right = values.size
-    ans += bit.range(left, right)
-    bit.add(values.get(num), 1)
+    const l = values.get(num * 2) + 1
+    const r = values.size - 1
+    ans += st.query(l, r)
+    st.add(values.get(num), 1)
   }
   return ans
 }
-class BIT {
-  constructor(size) {
-    this.size = size
-    this.tree = new Array(size + 1).fill(0)
-  }
-  lowbit(x) {
-    return x & -x
+class ST {
+  constructor(n) {
+    this.n = n
+    this.tree = new Array(2 * n).fill(0)
   }
   add(i, v) {
-    while (i <= this.size) {
+    i += this.n
+    while (i > 0) {
       this.tree[i] += v
-      i += this.lowbit(i)
+      i >>= 1
     }
   }
-  query(i) {
+  query(l, r) {
+    l += this.n
+    r += this.n
     let sum = 0
-    while (i > 0) {
-      sum += this.tree[i]
-      i -= this.lowbit(i)
+    while (l <= r) {
+      if ((l & 1) === 1) {
+        sum += this.tree[l]
+        l += 1
+      }
+      if ((r & 1) === 0) {
+        sum += this.tree[r]
+        r -= 1
+      }
+      l >>= 1
+      r >>= 1
     }
     return sum
-  }
-  range(l, r) {
-    return this.query(r) - this.query(l - 1)
   }
 }
 

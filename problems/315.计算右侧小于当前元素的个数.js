@@ -10,57 +10,57 @@
  * @return {number[]}
  */
 
-class BinaryIndexedTree {
-  constructor(size) {
-    this.size = size
-    this.tree = new Array(size + 1).fill(0)
-  }
-  add(index, delta) {
-    while (index <= this.size) {
-      this.tree[index] += delta
-      index += this.lowbit(index)
-    }
-  }
-  query(index) {
-    let sum = 0
-    while (index > 0) {
-      sum += this.tree[index]
-      index -= this.lowbit(index)
-    }
-    return sum
-  }
-  lowbit(x) {
-    return x & -x
-  }
-}
-var countSmaller = function (nums) {
-  // 树状数组
-  const n = nums.length
-  // 重点在于如何抽象出这个关系
-  // “计算右侧小于当前元素的个数”我们可以“从后向前一个一个填”。
-  // 因为涉及大小关系，所以要排个序，并且给出序号。这一步操作也叫“离散化”。
-  // 数组从小到大排序，索引从1开始计数。
-  const uniques = Array.from(new Set(nums)).sort((a, b) => a - b)
-  const rankMap = {}
-  let index = 1
-  for (const num of uniques) {
-    rankMap[num] = index
-    index += 1
-  }
+// class BinaryIndexedTree {
+//   constructor(size) {
+//     this.size = size
+//     this.tree = new Array(size + 1).fill(0)
+//   }
+//   add(index, delta) {
+//     while (index <= this.size) {
+//       this.tree[index] += delta
+//       index += this.lowbit(index)
+//     }
+//   }
+//   query(index) {
+//     let sum = 0
+//     while (index > 0) {
+//       sum += this.tree[index]
+//       index -= this.lowbit(index)
+//     }
+//     return sum
+//   }
+//   lowbit(x) {
+//     return x & -x
+//   }
+// }
+// var countSmaller = function (nums) {
+//   // 树状数组
+//   const n = nums.length
+//   // 重点在于如何抽象出这个关系
+//   // “计算右侧小于当前元素的个数”我们可以“从后向前一个一个填”。
+//   // 因为涉及大小关系，所以要排个序，并且给出序号。这一步操作也叫“离散化”。
+//   // 数组从小到大排序，索引从1开始计数。
+//   const uniques = Array.from(new Set(nums)).sort((a, b) => a - b)
+//   const rankMap = {}
+//   let index = 1
+//   for (const num of uniques) {
+//     rankMap[num] = index
+//     index += 1
+//   }
 
-  const res = new Array(n).fill(0)
-  const bit = new BinaryIndexedTree(uniques.length)
-  for (let i = n - 1; i >= 0; i--) {
-    // 从后往前填表
-    // 找出数字所对应的排名。
-    const rank = rankMap[nums[i]]
-    // 更新对应的计数
-    bit.add(rank, 1)
-    // 找出小于当前排名的计数和，即查询[0, rank - 1]
-    res[i] = bit.query(rank - 1)
-  }
-  return res
-}
+//   const res = new Array(n).fill(0)
+//   const bit = new BinaryIndexedTree(uniques.length)
+//   for (let i = n - 1; i >= 0; i--) {
+//     // 从后往前填表
+//     // 找出数字所对应的排名。
+//     const rank = rankMap[nums[i]]
+//     // 更新对应的计数
+//     bit.add(rank, 1)
+//     // 找出小于当前排名的计数和，即查询[0, rank - 1]
+//     res[i] = bit.query(rank - 1)
+//   }
+//   return res
+// }
 
 // var countSmaller = function (nums) {
 //   // 线段树
@@ -117,6 +117,74 @@ var countSmaller = function (nums) {
 //     return sum
 //   }
 // }
+
+class SegmentTree {
+  constructor(n) {
+    this.n = n
+    this.tree = new Array(4 * n).fill(0)
+  }
+  add(index, val) {
+    this._add(1, 0, this.n - 1, index, val)
+  }
+  _add(node, start, end, index, val) {
+    if (start === end) {
+      this.tree[node] += val
+      return
+    }
+    const mid = start + ((end - start) >> 1)
+    if (index <= mid) {
+      this._add(this.left(node), start, mid, index, val)
+    } else {
+      this._add(this.right(node), mid + 1, end, index, val)
+    }
+    this.tree[node] = this.tree[this.left(node)] + this.tree[this.right(node)]
+  }
+  query(left, right) {
+    if (left < 0 || right >= this.n || left > right) {
+      return 0
+    }
+    return this._query(1, 0, this.n - 1, left, right)
+  }
+  _query(node, start, end, left, right) {
+    if (start === left && end === right) {
+      return this.tree[node]
+    }
+    const mid = start + ((end - start) >> 1)
+    if (right <= mid) {
+      return this._query(this.left(node), start, mid, left, right)
+    } else if (left > mid) {
+      return this._query(this.right(node), mid + 1, end, left, right)
+    } else {
+      return (
+        this._query(this.left(node), start, mid, left, mid) +
+        this._query(this.right(node), mid + 1, end, mid + 1, right)
+      )
+    }
+  }
+  left(node) {
+    return node * 2
+  }
+  right(node) {
+    return node * 2 + 1
+  }
+}
+function countSmaller(nums) {
+  const uniques = Array.from(new Set(nums)).sort((a, b) => a - b)
+  const rankMap = {}
+  for (let i = 0; i < uniques.length; i++) {
+    rankMap[uniques[i]] = i
+  }
+
+  const st = new SegmentTree(uniques.length)
+  const ans = new Array(nums.length).fill(0)
+  for (let i = nums.length - 1; i >= 0; i--) {
+    const rank = rankMap[nums[i]]
+    ans[i] = st.query(0, rank - 1)
+    st.add(rank, 1)
+  }
+  return ans
+}
+
 // @lc code=end
 
 const assert = require('node:assert').strict

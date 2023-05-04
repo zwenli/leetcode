@@ -22,45 +22,84 @@
 //   }
 // }
 
+// class NumArray {
+//   // 线段树
+//   constructor(nums) {
+//     this.n = nums.length
+//     this.segmentTree = new Array(this.n * 4).fill(0)
+//     this.build(0, 0, this.n - 1, nums)
+//   }
+//   sumRange(left, right) {
+//     return this.range(left, right, 0, 0, this.n - 1)
+//   }
+//   build(node, s, e, nums) {
+//     if (s === e) {
+//       this.segmentTree[node] = nums[s]
+//       return
+//     }
+//     const m = s + ((e - s) >> 1)
+//     this.build(node * 2 + 1, s, m, nums)
+//     this.build(node * 2 + 2, m + 1, e, nums)
+//     this.segmentTree[node] =
+//       this.segmentTree[node * 2 + 1] + this.segmentTree[node * 2 + 2]
+//   }
+
+//   range(left, right, node, s, e) {
+//     if (left === s && right === e) {
+//       return this.segmentTree[node]
+//     }
+//     const m = s + ((e - s) >> 1)
+//     if (right <= m) {
+//       return this.range(left, right, node * 2 + 1, s, m)
+//     } else if (left > m) {
+//       return this.range(left, right, node * 2 + 2, m + 1, e)
+//     } else {
+//       return (
+//         this.range(left, m, node * 2 + 1, s, m) +
+//         this.range(m + 1, right, node * 2 + 2, m + 1, e)
+//       )
+//     }
+//   }
+// }
+
 class NumArray {
-  // 线段树
+  // 树状数组
   constructor(nums) {
-    this.n = nums.length
-    this.segmentTree = new Array(this.n * 4).fill(0)
-    this.build(0, 0, this.n - 1, nums)
+    this.nums = nums
+    this.tree = new Array(nums.length + 1).fill(0)
+    for (let i = 0; i < nums.length; i++) {
+      this.add(i + 1, nums[i])
+    }
   }
   sumRange(left, right) {
-    return this.range(left, right, 0, 0, this.n - 1)
-  }
-  build(node, s, e, nums) {
-    if (s === e) {
-      this.segmentTree[node] = nums[s]
-      return
-    }
-    const m = s + ((e - s) >> 1)
-    this.build(node * 2 + 1, s, m, nums)
-    this.build(node * 2 + 2, m + 1, e, nums)
-    this.segmentTree[node] =
-      this.segmentTree[node * 2 + 1] + this.segmentTree[node * 2 + 2]
+    return this.query(right + 1) - this.query(left)
   }
 
-  range(left, right, node, s, e) {
-    if (left === s && right === e) {
-      return this.segmentTree[node]
-    }
-    const m = s + ((e - s) >> 1)
-    if (right <= m) {
-      return this.range(left, right, node * 2 + 1, s, m)
-    } else if (left > m) {
-      return this.range(left, right, node * 2 + 2, m + 1, e)
-    } else {
-      return (
-        this.range(left, m, node * 2 + 1, s, m) +
-        this.range(m + 1, right, node * 2 + 2, m + 1, e)
-      )
+  add(i, v) {
+    while (i <= this.nums.length) {
+      this.tree[i] += v
+      i += this.lowbit(i)
     }
   }
+  query(i) {
+    let sum = 0
+    while (i > 0) {
+      sum += this.tree[i]
+      i -= this.lowbit(i)
+    }
+    return sum
+  }
+
+  lowbit(x) {
+    return x & -x
+  }
 }
+
+/**
+ * Your NumArray object will be instantiated and called as such:
+ * var obj = new NumArray(nums)
+ * var param_1 = obj.sumRange(left,right)
+ */
 
 /**
  * Your NumArray object will be instantiated and called as such:

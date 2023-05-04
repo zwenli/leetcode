@@ -15,68 +15,130 @@
  * @return {number}
  */
 
+// function countRangeSum(nums, lower, upper) {
+//   // 树状数组
+//   // https://leetcode.cn/problems/count-of-range-sum/solution/by-ac_oier-b36o/
+
+//   // 由于区间和的定义是子数组的元素和，容易想到「前缀和」来快速求解。
+//   // 对于每个nums[i]，需要统计每个以nums[i]为右端点的合法子数组个数（合法
+//   // 子数组是指区间和值范围为 [lower,upper] 的子数组）。
+//   // 可以从左往右处理nums，假设处理到位置k，同时下表[0,k]的前缀和为s，那么以
+//   // nums[k]为右端点的合法子数组个数，等价于在下标[0,k-1]中前缀和范围在
+//   // [s-upper, s-lower]的数的个数。
+
+//   let allNumbers = []
+//   let s = 0
+//   allNumbers.push(s)
+//   for (const num of nums) {
+//     s += num
+//     allNumbers.push(s)
+//     allNumbers.push(s - lower)
+//     allNumbers.push(s - upper)
+//   }
+//   allNumbers = Array.from(new Set(allNumbers.sort((a, b) => a - b)))
+//   const values = new Map()
+//   let idx = 0
+//   allNumbers.forEach((num) => values.set(num, ++idx))
+
+//   s = 0
+//   let ans = 0
+//   const bit = new BIT(values.size)
+//   bit.add(values.get(s), 1)
+//   for (const num of nums) {
+//     s += num
+//     const left = values.get(s - upper)
+//     const right = values.get(s - lower)
+//     ans += bit.range(left, right)
+//     bit.add(values.get(s), 1)
+//   }
+//   return ans
+// }
+// class BIT {
+//   constructor(size) {
+//     this.size = size
+//     this.tree = new Array(size + 1).fill(0)
+//   }
+//   lowbit(x) {
+//     return x & -x
+//   }
+//   add(i, v) {
+//     while (i <= this.size) {
+//       this.tree[i] += v
+//       i += this.lowbit(i)
+//     }
+//   }
+//   query(i) {
+//     let sum = 0
+//     while (i > 0) {
+//       sum += this.tree[i]
+//       i -= this.lowbit(i)
+//     }
+//     return sum
+//   }
+//   range(l, r) {
+//     return this.query(r) - this.query(l - 1)
+//   }
+// }
+
 function countRangeSum(nums, lower, upper) {
   // 树状数组
-  // https://leetcode.cn/problems/count-of-range-sum/solution/by-ac_oier-b36o/
 
-  // 由于区间和的定义是子数组的元素和，容易想到「前缀和」来快速求解。
-  // 对于每个nums[i]，需要统计每个以nums[i]为右端点的合法子数组个数（合法
-  // 子数组是指区间和值范围为 [lower,upper] 的子数组）。
-  // 可以从左往右处理nums，假设处理到位置k，同时下表[0,k]的前缀和为s，那么以
-  // nums[k]为右端点的合法子数组个数，等价于在下标[0,k-1]中前缀和范围在
-  // [s-upper, s-lower]的数的个数。
-
-  let allNumbers = []
-  let s = 0
-  allNumbers.push(s)
+  let sum = 0
+  const preSum = [0]
   for (const num of nums) {
-    s += num
-    allNumbers.push(s)
-    allNumbers.push(s - lower)
-    allNumbers.push(s - upper)
+    sum += num
+    preSum.push(sum)
   }
-  allNumbers = Array.from(new Set(allNumbers.sort((a, b) => a - b)))
+  let allNumbers = []
+  for (const s of preSum) {
+    allNumbers.push(s)
+    allNumbers.push(s - upper)
+    allNumbers.push(s - lower)
+  }
+  allNumbers = new Set(allNumbers.sort((a, b) => a - b))
   const values = new Map()
   let idx = 0
-  allNumbers.forEach((num) => values.set(num, ++idx))
+  for (const num of allNumbers) {
+    values.set(num, idx++)
+  }
 
-  s = 0
   let ans = 0
-  const bit = new BIT(values.size)
-  bit.add(values.get(s), 1)
-  for (const num of nums) {
-    s += num
-    const left = values.get(s - upper)
-    const right = values.get(s - lower)
-    ans += bit.range(left, right)
-    bit.add(values.get(s), 1)
+  const st = new ST(values.size)
+  for (const s of preSum) {
+    const l = values.get(s - upper)
+    const r = values.get(s - lower)
+    ans += st.query(l, r)
+    st.add(values.get(s), 1)
   }
   return ans
 }
-class BIT {
-  constructor(size) {
-    this.size = size
-    this.tree = new Array(size + 1).fill(0)
-  }
-  lowbit(x) {
-    return x & -x
+class ST {
+  constructor(n) {
+    this.n = n
+    this.tree = new Array(n * 2).fill(0)
   }
   add(i, v) {
-    while (i <= this.size) {
+    i += this.n
+    while (i > 0) {
       this.tree[i] += v
-      i += this.lowbit(i)
+      i >>= 1
     }
   }
-  query(i) {
+  query(l, r) {
+    l += this.n
+    r += this.n
     let sum = 0
-    while (i > 0) {
-      sum += this.tree[i]
-      i -= this.lowbit(i)
+    while (l <= r) {
+      if ((l & 1) === 1) {
+        sum += this.tree[l++]
+      }
+      if ((r & 1) === 0) {
+        sum += this.tree[r--]
+      }
+      l >>= 1
+      r >>= 1
     }
     return sum
-  }
-  range(l, r) {
-    return this.query(r) - this.query(l - 1)
   }
 }
 

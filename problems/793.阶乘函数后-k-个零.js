@@ -9,28 +9,57 @@
  * @param {number} k
  * @return {number}
  */
+// var preimageSizeFZF = function (k) {
+//   return f(k + 1) - f(k)
+// }
+
+// // 通过二分法求解x!末尾零的个数不小于x的最小值
+// function f(x) {
+//   let r = x * 5
+//   let l = 0
+//   while (l <= r) {
+//     const mid = Math.floor((r - l) / 2) + l
+//     if (getCnt(mid) < x) {
+//       l = mid + 1
+//     } else {
+//       r = mid - 1
+//     }
+//   }
+//   return r + 1
+// }
+// function getCnt(x) {
+//   let ans = 0
+//   while (x !== 0) {
+//     x = Math.floor(x / 5)
+//     ans += x
+//   }
+//   return ans
+// }
+
 var preimageSizeFZF = function (k) {
-  return f(k + 1) - f(k)
+  if (k <= 1) return 5
+  return f(k) - f(k - 1)
 }
 
-// 通过二分法求解x!末尾零的个数不小于x的最小值
+// 通过二分法求解x!末尾零的个数小于等于x的数量个数
 function f(x) {
-  let r = x * 5
-  let l = 0
-  while (l <= r) {
-    const mid = Math.floor((r - l) / 2) + l
-    if (getCnt(mid) < x) {
-      l = mid + 1
+  x = BigInt(x)
+  let l = 0n
+  let r = BigInt(10 ** 10)
+  while (l < r) {
+    const mid = (1n + l + r) >> 1n
+    if (getCnt(mid) <= x) {
+      l = mid
     } else {
-      r = mid - 1
+      r = mid - 1n
     }
   }
-  return r + 1
+  return Number(r)
 }
 function getCnt(x) {
-  let ans = 0
-  while (x !== 0) {
-    x = Math.floor(x / 5)
+  let ans = 0n
+  while (x !== 0n) {
+    x = x / 5n
     ans += x
   }
   return ans

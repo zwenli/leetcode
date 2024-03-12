@@ -45,6 +45,12 @@ function largestRectangleArea(heights) {
   const stack = [-1]; // -1 哨兵，这样处理就无须再判断栈的length了
   let ans = 0;
   for (let i = 0; i < n; i += 1) {
+    // 当前栈顶部为左边界，heights[i]为右边界
+    // stack 是根据高度单调递增的，当栈顶元素高度高于heights[i]，
+    // 为了保持stack的单调递增，就不需要处理栈顶元素了
+    // 简单来理解就是找到了右边界，开始往左找左边界计算面积，
+    // 直到遇到左边有高度是小于等于heights[i]，heights[i]不是此元素的有边界
+    // 此时也恢复了stack的单调递增
     while (heights[i] < heights[stack[stack.length - 1]]) {
       // i柱子的高度小于栈顶柱子的高度，说明栈顶柱子的右边界已确定
       const h = heights[stack.pop()]; // 当前最大高度柱子的高度
@@ -160,3 +166,4 @@ function largestRectangleArea(heights) {
 const res1 = largestRectangleArea([2, 1, 5, 6, 2, 3]); // 10
 const res2 = largestRectangleArea([2, 4]); // 4
 const res3 = largestRectangleArea([1, 2, 3, 2, 1]); // 6
+const res4 = largestRectangleArea([2,1,0,2]) // 2

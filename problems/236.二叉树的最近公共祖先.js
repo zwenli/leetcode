@@ -42,62 +42,60 @@
 //   }
 // }
 
-function lowestCommonAncestor(root, p, q) {
-  // 解法2 哈希
-  // 时间复杂度O(n):
-  // 空间复杂度O(n)
-  const parent = new Map();
-  const seen = new Set();
-  dfs(root);
-  while (p) {
-    seen.add(p.val);
-    p = parent.get(p.val);
-  }
-  while (q) {
-    if (seen.has(q.val)) return q;
-    q = parent.get(q.val);
-  }
-  return null;
-  // 这里可以改为迭代
-  function dfs(root) {
-    if (!root) return;
-    if (root.left) {
-      parent.set(root.left.val, root);
-      dfs(root.left);
-    }
-    if (root.right) {
-      parent.set(root.right.val, root);
-      dfs(root.right);
-    }
-  }
-  // function bfs(root, p, q) {
-  //   const stack = [root];
-  //   while (!parent.has(p.val) || !parent.has(q.val)) {
-  //     const node = stack.shift();
-  //     if (node.left) {
-  //       parent.set(node.left.val, root);
-  //       stack.push(node.left);
-  //     }
-  //     if (node.right) {
-  //       parent.set(node.right.val, root);
-  //       stack.push(node.right);
-  //     }
-  //   }
-  // }
-}
-
 // function lowestCommonAncestor(root, p, q) {
-//   // 解法3 递归
+//   // 解法2 哈希
 //   // 时间复杂度O(n):
 //   // 空间复杂度O(n)
-//   if (!root || root === p || root === q) return root;
-//   const left = lowestCommonAncestor(root.left, p, q);
-//   const right = lowestCommonAncestor(root.right, p, q);
-//   if (!left && !right) return null;
-//   if (!left) return right;
-//   if (!right) return left;
-//   return root;
+//   const parent = new Map();
+//   const seen = new Set();
+//   dfs(root);
+//   while (p) {
+//     seen.add(p.val);
+//     p = parent.get(p.val);
+//   }
+//   while (q) {
+//     if (seen.has(q.val)) return q;
+//     q = parent.get(q.val);
+//   }
+//   return null;
+//   // 这里可以改为迭代
+//   function dfs(root) {
+//     if (!root) return;
+//     if (root.left) {
+//       parent.set(root.left.val, root);
+//       dfs(root.left);
+//     }
+//     if (root.right) {
+//       parent.set(root.right.val, root);
+//       dfs(root.right);
+//     }
+//   }
+//   // function bfs(root, p, q) {
+//   //   const stack = [root];
+//   //   while (!parent.has(p.val) || !parent.has(q.val)) {
+//   //     const node = stack.shift();
+//   //     if (node.left) {
+//   //       parent.set(node.left.val, root);
+//   //       stack.push(node.left);
+//   //     }
+//   //     if (node.right) {
+//   //       parent.set(node.right.val, root);
+//   //       stack.push(node.right);
+//   //     }
+//   //   }
+//   // }
 // }
+
+function lowestCommonAncestor(root, p, q) {
+  // 解法3 递归
+  // 时间复杂度O(n):
+  // 空间复杂度O(n)
+  if (!root || root === p || root === q) return root;
+  const left = lowestCommonAncestor(root.left, p, q);
+  const right = lowestCommonAncestor(root.right, p, q);
+  if (left && right) return root
+  return !left ? right : left;
+}
 
 // ------------------------------
 

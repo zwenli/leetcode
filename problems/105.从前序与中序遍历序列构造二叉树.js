@@ -21,48 +21,58 @@
  * @return {TreeNode}
  */
 
+// function buildTree(preorder, inorder) {
+//   // 解法2，迭代，算是解法1的显式实现
+//   // 前序: [根 [左子树的前序遍历结果] [右子树的前序遍历结果]]
+//   // 中序: [[左子树的中序遍历结果] 根 [右子树的中序遍历结果]]
+//   // 入栈的必定是满足中序遍历位置在栈顶节点的左边，也就是左孩子
+//   // 时间复杂度O(n): n为节点数量，递归时间复杂度O(n)，下标map的时间复杂度为O(n)
+//   // 空间复杂度O(n): 栈的存储空间必定是在n以内的
+//   if (!preorder || !preorder.length) return null;
+
+//   // 构建中序遍历的下标map
+//   const n = inorder.length;
+//   const inMap = new Map();
+//   for (let i = 0; i < n; i += 1) {
+//     inMap.set(inorder[i], i);
+//   }
+
+//   // 初始化栈
+//   const root = new TreeNode(preorder[0]);
+//   const stack = [root];
+
+//   // 遍历前序遍历结果
+//   for (let i = 1; i < n; i += 1) {
+//     const value = preorder[i];
+//     const node = new TreeNode(value);
+//     if (inMap.get(value) < inMap.get(stack[stack.length - 1].val)) {
+//       // 对中序遍历来说，如果当前节点在栈顶的左边，
+//       // 说明是栈顶的左孩子 （结合前序遍历的结果）
+//       stack[stack.length - 1].left = node;
+//     } else {
+//       // 当前节点不在栈顶的左边时，
+//       // 说明当前节点是栈顶的右孩子或者是其祖先节点
+//       // 出栈直到祖先节点用完，即栈为空
+//       // 或者栈顶的节点是在节点右边
+//       let parent = null;
+//       while (stack.length && (inMap.get(value) > inMap.get(stack[stack.length - 1].val))) {
+//         parent = stack.pop();
+//       }
+//       parent.right = node;
+//     }
+//     stack.push(node);
+//   }
+//   return root;
+// }
+
 function buildTree(preorder, inorder) {
-  // 解法2，迭代，算是解法1的显式实现
-  // 前序: [根 [左子树的前序遍历结果] [右子树的前序遍历结果]]
-  // 中序: [[左子树的中序遍历结果] 根 [右子树的中序遍历结果]]
-  // 入栈的必定是满足中序遍历位置在栈顶节点的左边，也就是左孩子
-  // 时间复杂度O(n): n为节点数量，递归时间复杂度O(n)，下标map的时间复杂度为O(n)
-  // 空间复杂度O(n): 栈的存储空间必定是在n以内的
-  if (!preorder || !preorder.length) return null;
-
-  // 构建中序遍历的下标map
-  const n = inorder.length;
-  const inMap = new Map();
-  for (let i = 0; i < n; i += 1) {
-    inMap.set(inorder[i], i);
-  }
-
-  // 初始化栈
-  const root = new TreeNode(preorder[0]);
-  const stack = [root];
-
-  // 遍历前序遍历结果
-  for (let i = 1; i < n; i += 1) {
-    const value = preorder[i];
-    const node = new TreeNode(value);
-    if (inMap.get(value) < inMap.get(stack[stack.length - 1].val)) {
-      // 对中序遍历来说，如果当前节点在栈顶的左边，
-      // 说明是栈顶的左孩子 （结合前序遍历的结果）
-      stack[stack.length - 1].left = node;
-    } else {
-      // 当前节点不在栈顶的左边时，
-      // 说明当前节点是栈顶的右孩子或者是其祖先节点
-      // 出栈直到祖先节点用完，即栈为空
-      // 或者栈顶的节点是在节点右边
-      let parent = null;
-      while (stack.length && (inMap.get(value) > inMap.get(stack[stack.length - 1].val))) {
-        parent = stack.pop();
-      }
-      parent.right = node;
-    }
-    stack.push(node);
-  }
-  return root;
+  if (!inorder.length) return null
+  const rootVal = preorder.shift()
+  const root = new TreeNode(rootVal)
+  const inIdx = inorder.findIndex(e => e === rootVal)
+  root.left = buildTree(preorder, inorder.slice(0, inIdx))
+  root.right = buildTree(preorder, inorder.slice(inIdx + 1))
+  return root
 }
 
 // function buildTree(preorder, inorder) {
@@ -174,3 +184,4 @@ function TreeNode(val) {
 }
 
 const res1 = buildTree([3, 9, 20, 15, 7], [9, 3, 15, 20, 7]);
+console.log(res1);

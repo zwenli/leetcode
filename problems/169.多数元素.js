@@ -44,26 +44,26 @@
 //   }
 // }
 
-// function majorityElement(nums) {
-//   // 投票算法
-//   // 时间复杂度O(n):
-//   // 空间复杂度O(1):
-//   if (!nums || !nums.length) return null;
-//   let candidate = null;
-//   let count = 0;
-//   for (let i = 0; i < nums.length; i += 1) {
-//     const num = nums[i];
-//     if (count === 0) {
-//       candidate = num;
-//     }
-//     if (candidate === num) {
-//       count += 1;
-//     } else {
-//       count -= 1;
-//     }
-//   }
-//   return candidate;
-// }
+function majorityElement(nums) {
+  // 投票算法
+  // 时间复杂度O(n):
+  // 空间复杂度O(1):
+  if (!nums || !nums.length) return null;
+  let candidate = null;
+  let count = 0;
+  for (let i = 0; i < nums.length; i += 1) {
+    const num = nums[i];
+    if (count === 0) {
+      candidate = num;
+    }
+    if (candidate === num) {
+      count += 1;
+    } else {
+      count -= 1;
+    }
+  }
+  return candidate;
+}
 
 // function majorityElement(nums) {
 //   // 位运算, JavaScript中位运算会将操作数当成是32位的二进制数，但是返回的结果是标准的JavaScript数值
@@ -110,35 +110,35 @@
 //   return nums[nums.length >> 1];
 // }
 
-function majorityElement(nums) {
-  // 随机
-  // https://leetcode-cn.com/problems/majority-element/solution/duo-shu-yuan-su-by-leetcode-solution/
-  // 时间复杂度O(n): 最坏的情况是O(∞)，期望的时间复杂度为O(n), 证明过程看链接
-  // 空间复杂度O(1):
-  if (!nums || !nums.length) return null;
-  const n = nums.length;
-  while (true) {
-    const candidate = nums[randomInt(0, n)];
-    if (countOccurences(nums, candidate) > n / 2) {
-      return candidate;
-    }
-  }
-  // 随机函数
-  function randomInt(min, max) {
-    // return [min, max)
-    return Math.floor(Math.random() * (max - min)) + min;
-  }
-  function countOccurences(nums, num) {
-    const n = nums.length;
-    let count = 0;
-    for (let i = 0; i < n; i += 1) {
-      if (nums[i] === num) {
-        count += 1;
-      }
-    }
-    return count;
-  }
-}
+// function majorityElement(nums) {
+//   // 随机
+//   // https://leetcode-cn.com/problems/majority-element/solution/duo-shu-yuan-su-by-leetcode-solution/
+//   // 时间复杂度O(n): 最坏的情况是O(∞)，期望的时间复杂度为O(n), 证明过程看链接
+//   // 空间复杂度O(1):
+//   if (!nums || !nums.length) return null;
+//   const n = nums.length;
+//   while (true) {
+//     const candidate = nums[randomInt(0, n)];
+//     if (countOccurences(nums, candidate) > n / 2) {
+//       return candidate;
+//     }
+//   }
+//   // 随机函数
+//   function randomInt(min, max) {
+//     // return [min, max)
+//     return Math.floor(Math.random() * (max - min)) + min;
+//   }
+//   function countOccurences(nums, num) {
+//     const n = nums.length;
+//     let count = 0;
+//     for (let i = 0; i < n; i += 1) {
+//       if (nums[i] === num) {
+//         count += 1;
+//       }
+//     }
+//     return count;
+//   }
+// }
 
 // function majorityElement(nums) {
 //   // 哈希2，过程中累加，判断无需全部遍历，哈希1的优化

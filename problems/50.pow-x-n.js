@@ -16,31 +16,31 @@
  * @return {number}
  */
 
-// function myPow(x, n) {
-//   // 快速幂递归
-//   // 时间复杂度O(logn):
-//   // 空间复杂度O(logn):
-//   if (n === 0) return 1;
-//   if (n < 0) return myPow(1 / x, -n);
-//   return (n % 2 === 1)
-//     ? x * myPow(x * x, Math.floor(n / 2))
-//     : myPow(x * x, Math.floor(n / 2));
-//   // if (n < 0) {
-//   //   x = 1 / x;
-//   //   n = -n;
-//   // }
-//   // return pow(x, n);
+function myPow(x, n) {
+  // 快速幂递归
+  // 时间复杂度O(logn):
+  // 空间复杂度O(logn):
+  if (n === 0) return 1;
+  if (n < 0) return myPow(1 / x, -n);
+  return (n % 2 === 1)
+    ? x * myPow(x * x, Math.floor(n / 2))
+    : myPow(x * x, Math.floor(n / 2));
+  // if (n < 0) {
+  //   x = 1 / x;
+  //   n = -n;
+  // }
+  // return pow(x, n);
 
-//   // function pow(x, n) {
-//   //   if (n === 0) {
-//   //     return 1;
-//   //   }
-//   //   const y = pow(x, Math.floor(n / 2));
-//   //   return n % 2 === 1
-//   //     ? x * y * y
-//   //     : y * y;
-//   // }
-// }
+  // function pow(x, n) {
+  //   if (n === 0) {
+  //     return 1;
+  //   }
+  //   const y = pow(x, Math.floor(n / 2));
+  //   return n % 2 === 1
+  //     ? x * y * y
+  //     : y * y;
+  // }
+}
 
 // function myPow(x, n) {
 //   // 快速幂迭代

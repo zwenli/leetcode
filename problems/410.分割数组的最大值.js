@@ -71,9 +71,11 @@ function splitArray(nums, m) {
 // function splitArray(nums, m) {
 //   // dp[i,j], 表示前i个数字，分割为j段得到的最大连续子数组和的最小值。
 //   // 转移方程如下：
-//   // dp[i,j] =  min(max(dp[k][j-1], sub[i,k+1])), k = [0, i-1]
+//   // dp[i,j] =  min(max(dp[k][j-1], sub[k+1,i])), k = [0, i-1]
 //   // sub(i,j) 表示数组中下标区间(i,j)内数字的和
 //   // dp[0,0] = 0;
+//   // 合法状态必须 i>=j，因此可以全部状态默认设置为一个很大的值，max时将会等到一个很大的值
+//   // 就不会对外层的min产生任何影响
 //   const n = nums.length;
 //   const dp = new Array(n + 1).fill(0).map(
 //     () => new Array(m + 1).fill(Infinity),

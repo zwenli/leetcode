@@ -48,7 +48,7 @@ var findMaxForm = function (strs, m, n) {
 //   // 当 0 和 1 的背包数量为 j 和 k 时，有两种情况：
 //   // 当 j < zeros or k < ones，则不能选择第i个字符串，此时dp[i][j][k] = dp[i-1][j][k]
 //   // 当 j >= zeros && k >= ones，则不选择第i个字符串，有dp[i][j][k] = dp[i-1][j][k]
-//   // 选择第i个字符串，有dp[i][j][k] = dp[i-1][j-zeros][k-ones]，取最大值
+//   //                                选择第i个字符串，有dp[i][j][k] = dp[i-1][j-zeros][k-ones]+1，取最大值
 //   const length = strs.length
 //   const dp = new Array(length + 1)
 //     .fill(0)

@@ -33,11 +33,22 @@ type IsEqual<X, Y> =
     : false
 
 type Includes<T extends readonly any[], U> =
-  IsEqual<T[0], U> extends true
-    ? true
-    : T extends [T[0], ...infer rest]
-      ? Includes<rest, U>
-      : false
+  T extends [infer First, ...infer Rest]
+    ? IsEqual<First, U> extends true ? true : Includes<Rest, U>
+    : false
+
+// type IsEqual<X, Y> =
+//   (<T>() => T extends X ? 1 : 2) extends
+//   (<T>() => T extends Y ? 1 : 2)
+//     ? true
+//     : false
+
+// type Includes<T extends readonly any[], U> =
+//   IsEqual<T[0], U> extends true
+//     ? true
+//     : T extends [T[0], ...infer rest]
+//       ? Includes<rest, U>
+//       : false
 
 // type Includes<T extends readonly any[], U> =
 //   T extends [infer F, ...infer R]

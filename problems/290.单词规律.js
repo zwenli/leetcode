@@ -20,20 +20,20 @@ function wordPattern(pattern, s) {
   if (pattern.length !== words.length) {
     return false
   }
-  const p2w = {}
-  const w2p = {}
+  const p2w = new Map()
+  const w2p = new Map()
   const n = pattern.length
   for (let i = 0; i < n; i += 1) {
     const char = pattern[i]
     const word = words[i]
     if (
-      (p2w[char] && p2w[char] !== word) ||
-      (w2p[word] && w2p[word] !== char)
+      (p2w.has(char) && p2w.get(char) !== word) ||
+      (w2p.has(word) && w2p.get(word) !== char)
     ) {
       return false
     }
-    p2w[char] = word
-    w2p[word] = char
+    p2w.set(char, word)
+    w2p.set(word, char)
   }
   return true
 }
@@ -52,3 +52,7 @@ assert.equal(res3, false)
 
 const res4 = wordPattern('abba', 'dog dog dog dog')
 assert.equal(res4, false)
+
+// 狗屎测试用例，直接用 object 存，遇到constructor会出问题
+const res5 = wordPattern('abba', 'dog constructor constructor dog')
+assert.equal(res5, true)

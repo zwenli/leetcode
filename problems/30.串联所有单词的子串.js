@@ -26,7 +26,7 @@ function findSubstring(s, words) {
     const subWords = new Map()
     let j = i
     while (j < i + wordNum * wordLen) {
-      const word = s.substr(j, wordLen)
+      const word = s.substring(j, j + wordLen)
       if (
         allWords.has(word) &&
         (subWords.get(word) || 0) < allWords.get(word)

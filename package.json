@@ -2,6 +2,7 @@
   "name": "leetcode-notebook",
   "version": "1.0.0",
   "description": "算法练习",
+  "type": "module",
   "main": "index.js",
   "scripts": {
     "eslint": "eslint ./ --ext .ts",
@@ -19,6 +20,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@types/node": "^24.10.2",
     "@typescript-eslint/eslint-plugin": "^3.10.1",
     "@typescript-eslint/parser": "^3.10.1",
     "datastructures-js": "^12.0.0",

@@ -46,22 +46,32 @@
 
 function majorityElement(nums) {
   // 投票算法
-  // 时间复杂度O(n):
-  // 空间复杂度O(1):
-  if (!nums || !nums.length) return null;
-  let candidate = null;
-  let count = 0;
+  // 时间复杂度O(n): 仅需一次遍历数组
+  // 空间复杂度O(1): 仅用常数级额外空间
+  if (!nums || !nums.length) return null; // 边界处理：空数组返回null
+
+  let candidate = null; // 候选多数元素，初始为null
+  let count = 0; // 当前候选的「净票数」（支持票 - 反对票）
+
+  // 遍历数组中的每个元素
   for (let i = 0; i < nums.length; i += 1) {
-    const num = nums[i];
+    const num = nums[i]; // 当前处理的元素
+
+    // 当净票数为0时，当前元素成为新的候选（相当于重置投票）
     if (count === 0) {
       candidate = num;
     }
+
+    // 如果当前元素等于候选，净票数+1（支持票）
+    // 否则净票数-1（反对票）
     if (candidate === num) {
       count += 1;
     } else {
       count -= 1;
     }
   }
+
+  // 遍历结束后，候选即为多数元素（因多数元素的数量超过半数，无法被完全抵消）
   return candidate;
 }
 
